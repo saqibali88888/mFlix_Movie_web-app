@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Movie Search</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    background-color: #121212;
+    color: #ffffff;
+    margin: 0;
+    padding: 0;
+  }
+
+  .header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px;
+    background-color: #1e1e1e;
+  }
+
+  .search-container {
+    position: relative;
+  }
+
+  .search-input {
+    display: none;
+    padding: 8px;
+    border-radius: 5px;
+    border: none;
+    outline: none;
+    width: 200px;
+    background-color: #333;
+    color: #fff;
+  }
+
+  .search-icon {
+    cursor: pointer;
+    font-size: 24px;
+    color: #fff;
+  }
+
+  .results-container {
+    padding: 20px;
+  }
+
+  .movie-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    cursor: pointer;
+    background-color: #1e1e1e;
+    padding: 10px;
+    border-radius: 5px;
+  }
+
+  .movie-item img {
+    width: 80px;
+    height: auto;
+    margin-right: 10px;
+    border-radius: 5px;
+  }
+
+  .movie-title {
+    font-size: 16px;
+    color: #fff;
+  }
+
+  .movie-year {
+    font-size: 14px;
+    color: #bbb;
+  }
+</style>
+</head>
+<body>
+
+<!-- Header with Search Icon -->
+<div class="header">
+  <div class="logo">Movie Search</div>
+  <div class="search-container">
+    <span class="search-icon" onclick="toggleSearchInput()">🔍</span>
+    <input type="text" class="search-input" id="searchInput" placeholder="Search movies...">
+  </div>
+</div>
+
+<!-- Results Section -->
+<div class="results-container" id="results-container">
+  <!-- Movie results will appear here -->
+</div>
+
+<script>
+// Toggle the visibility of the search input
+function toggleSearchInput() {
+  const searchInput = document.getElementById('searchInput');
+  searchInput.style.display = searchInput.style.display === 'block' ? 'none' : 'block';
+  searchInput.focus();
+}
+
+// Fetch movies based on search query
+async function searchMovies(query) {
+  const apiUrl = `https://mymoviesclan-api.vercel.app/api/search?query=${query}`;
+  const response = await fetch(apiUrl);
+  const data = await response.json();
+  return data.results;
+}
+
+// Display search results
+function displaySearchResults(movies) {
+  const resultsContainer = document.getElementById('results-container');
+  resultsContainer.innerHTML = ''; // Clear previous results
+
+  movies.forEach(movie => {
+    const movieElement = document.createElement('div');
+    movieElement.classList.add('movie-item');
+    movieElement.innerHTML = `
+      <img src="${movie.sources[0].thumbnail}" alt="${movie.Title2}">
+      <div>
+        <div class="movie-title">${movie.Title2} (${movie.year})</div>
+        <div class="movie-year">${movie.year}</div>
+      </div>
+    `;
+
+    // On click, redirect to the video watch page
+    movieElement.addEventListener('click', () => {
+      const movieData = {
+        title: movie.Title2,
+        year: movie.year,
+        downloadLink: movie.sources[0].downloadLink,
+        streamUrl: movie.sources[0].streamUrl,
+        viewLink: movie.sources[0].viewLink,
+        thumbnail: movie.sources[0].thumbnail,
+        qualities: movie.sources.map(source => ({
+          quality: source.quality,
+          streamUrl: source.streamUrl,
+          fileSize: source.fileSize
+        }))
+      };
+      // Redirect to the video watch page
+      window.location.href = `video_page.html?data=${encodeURIComponent(JSON.stringify(movieData))}`;
+    });
+
+    resultsContainer.appendChild(movieElement);
+  });
+}
+
+// Listen for input changes to search movies
+document.getElementById('searchInput').addEventListener('input', async function() {
+  const query = this.value;
+  if (query.trim().length > 0) {
+    const movies = await searchMovies(query);
+    displaySearchResults(movies);
+  } else {
+    document.getElementById('results-container').innerHTML = ''; // Clear results if query is empty
+  }
+});
+</script>
+
+</body>
+</html>
