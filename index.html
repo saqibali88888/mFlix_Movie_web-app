@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Movie Carousel</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    background-color: #121212;
+    color: #ffffff;
+    padding: 20px;
+    margin: 0;
+  }
+  
+  .section-title {
+    font-size: 22px;
+    margin: 20px 0 10px;
+    color: #f5f5f5;
+  }
+
+  .carousel-container {
+    display: flex;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    gap: 12px;
+    padding: 10px 0;
+    white-space: nowrap;
+  }
+
+  .carousel-item {
+    flex: 0 0 auto;
+    width: 150px;
+    border-radius: 10px;
+    background-color: #1e1e1e;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    transition: transform 0.3s;
+    overflow: hidden;
+  }
+
+  .carousel-item:hover {
+    transform: scale(1.05);
+  }
+
+  .carousel-item img {
+    width: 100%;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+  }
+
+  .title {
+    font-size: 14px;
+    font-weight: bold;
+    color: #ffffff;
+    padding: 8px;
+    white-space: normal;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-height: 2.8em;
+    line-height: 1.4em;
+  }
+</style>
+</head>
+<body>
+
+<div class="section">
+  <div class="section-title">Movies Section</div>
+  <div class="carousel-container" id="movies-carousel">
+    <!-- Movie items will be displayed here -->
+  </div>
+</div>
+
+<script>
+async function fetchMovies(apiUrl) {
+  const response = await fetch(apiUrl);
+  const data = await response.json();
+  return data.results;
+}
+
+function displayMovies(movies, containerId) {
+  const carousel = document.getElementById(containerId);
+  carousel.innerHTML = ''; // Clear any existing items
+
+  movies.forEach(movie => {
+    const item = document.createElement('div');
+    item.classList.add('carousel-item');
+    item.innerHTML = `
+      <img src="${movie.sources[0].thumbnail}" alt="${movie.Title2}">
+      <div class="title">${movie.Title2} (${movie.year})</div>
+    `;
+    
+    // Pass movie data as query parameters
+    item.addEventListener('click', () => {
+      const movieData = {
+        title: movie.Title2,
+        year: movie.year,
+        downloadLink: movie.sources[0].downloadLink,
+        streamUrl: movie.sources[0].streamUrl,
+        viewLink: movie.sources[0].viewLink,
+        thumbnail: movie.sources[0].thumbnail,
+        qualities: movie.sources.map(source => ({
+          quality: source.quality,
+          streamUrl: source.streamUrl,
+          fileSize: source.fileSize
+        }))
+      };
+      
+      // Redirect to the second page with movie data in query string
+      window.location.href = `video_page.html?data=${encodeURIComponent(JSON.stringify(movieData))}`;
+    });
+
+    carousel.appendChild(item);
+  });
+}
+
+// Fetch and display movies
+fetchMovies('https://watchoflix-api.onrender.com/api/anime')
+  .then(movies => displayMovies(movies, 'movies-carousel'))
+  .catch(console.error);
+
+</script>
+
+</body>
+</html>
