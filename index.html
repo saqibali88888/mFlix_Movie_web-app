@@ -34,57 +34,61 @@
 <!-- Footer -->
 <div id="footer-placeholder"></div>
 
-<script>
-// Function to fetch movie data
-async function fetchMovies(apiUrl) {
-  const response = await fetch(apiUrl);
-  const data = await response.json();
-  return data.results;
-}
 
-// Function to display movies
-function displayMovies(movies, containerId) {
-  const carousel = document.getElementById(containerId);
-  carousel.innerHTML = ''; // Clear placeholder items
+  <script>
+    // Function to fetch movie data
+    async function fetchMovies(apiUrl) {
+      const response = await fetch(apiUrl);
+      const data = await response.json();
+      return data.results;
+    }
 
-  movies.forEach(movie => {
-    const item = document.createElement('div');
-    item.classList.add('carousel-item');
-    item.innerHTML = `
-      <div class="image-container">
-        <img src="${movie.sources[0].thumbnail}" alt="${movie.Title2}">
-      </div>
-      <div class="title-container">
-        <div class="title">${movie.Title2} (${movie.year})</div>
-      </div>
-    `;
-    
-    item.addEventListener('click', () => {
-      const movieData = {
-        title: movie.Title2,
-        year: movie.year,
-        downloadLink: movie.sources[0].downloadLink,
-        streamUrl: movie.sources[0].streamUrl,
-        viewLink: movie.sources[0].viewLink,
-        thumbnail: movie.sources[0].thumbnail,
-        qualities: movie.sources.map(source => ({
-          quality: source.quality,
-          streamUrl: source.streamUrl,
-          fileSize: source.fileSize
-        }))
-      };
-      window.location.href = `src/template/watchPage.html?data=${encodeURIComponent(JSON.stringify(movieData))}`;
-    });
+    // Function to display movies
+    function displayMovies(movies, containerId) {
+      const carousel = document.getElementById(containerId);
+      carousel.innerHTML = ''; // Clear placeholder items
 
-    carousel.appendChild(item);
-  });
-}
+      movies.forEach(movie => {
+        const item = document.createElement('div');
+        item.classList.add('carousel-item');
+        item.innerHTML = `
+          <div class="image-container">
+            <img src="${movie.sources[0].thumbnail}" alt="${movie.Title2}">
+          </div>
+          <div class="title-container">
+            <div class="title">${movie.Title2} (${movie.year})</div>
+          </div>
+        `;
+        
+        item.addEventListener('click', () => {
+          const movieData = {
+            title: movie.Title2,
+            year: movie.year,
+            thumbnail: movie.sources[0].thumbnail,
+            qualities: movie.sources.map(source => ({
+              quality: source.quality,
+              fileSize: source.fileSize,
+              streamUrl: source.streamUrl,
+              downloadLink: source.downloadLink
+            }))
+          };
 
-// Fetch and display movies
-fetchMovies('https://mymoviesclan-api.vercel.app/api/anime')
-  .then(movies => displayMovies(movies, 'movies-carousel'))
-  .catch(console.error);
-</script>
+          // Store movie data in localStorage
+          localStorage.setItem('movieData', JSON.stringify(movieData));
+
+          // Navigate to the watch page with the movie title in the URL
+          window.location.href = `watch.html?title=${encodeURIComponent(movie.Title2)}`;
+        });
+
+        carousel.appendChild(item);
+      });
+    }
+
+    // Fetch and display movies
+    fetchMovies('https://mymoviesclan-api.vercel.app/api/anime')
+      .then(movies => displayMovies(movies, 'movies-carousel'))
+      .catch(console.error);
+  </script>
 
   
   <script>
