@@ -1,5 +1,5 @@
 <style>
-  /* Footer */
+  /* Footer 
   footer {
     background-color: #333;
     padding: 12px;
@@ -9,13 +9,7 @@
     bottom: 0;
     width: 100%;
     font-size: 14px;
-  }
-
-  /* Media Queries for Responsiveness */
-  @media (max-width: 768px) {
-    .carousel-container {
-      gap: 8px;
-    }
+  } */
 
     .carousel-item {
       width: 130px;
@@ -29,7 +23,22 @@
   </style>
 
 <footer>
-  <p>&copy; 2024 Movie Carousel. All rights reserved.</p>
+  <div class="footer" style="border-radius: 20px 20px 0px 0px; box-shadow: rgba(0, 0, 0, 0.1) 0px 5px 35px; box-sizing: border-box; padding:10px; position: relative; left:0; bottom:0; width:100%; text-align: center;">
+    <div class="made-with-love">
+      Made with ❤ by WebCoderHub
+    </div>
+    
+    <div>
+      © <span id='getYear'>
+      <script>
+
+      /*<![CDATA[*/ var d = new Date(); var n = d.getFullYear(); document.getElementById('getYear').innerHTML = n; /*]]>*/
+      </script></span> ‧
+      <bdi>
+        <a href='https://t.me/webcoderhub'>WebCoderHub</a>
+      </bdi>‧ All rights reserved.
+    </div>
+  </div>
 </footer>
 
 
