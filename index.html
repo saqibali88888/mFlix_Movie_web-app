@@ -5,91 +5,232 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Movie Carousel</title>
 <style>
+  /* General Body Styles */
   body {
-    font-family: Arial, sans-serif;
+    font-family: 'Roboto', sans-serif;
+    margin: 0;
+    padding: 0;
+    transition: background-color 0.3s, color 0.3s, box-shadow 0.3s;
+  }
+
+  /* Dark Mode Styling */
+  body.dark-mode {
     background-color: #121212;
     color: #ffffff;
-    padding: 20px;
-    margin: 0;
   }
-  
+
+  /* Light Mode Styling */
+  body.light-mode {
+    background-color: #ffffff;
+    color: #121212;
+  }
+
+  /* Header Styling */
+  header {
+    background-color: #333;
+    padding: 16px 32px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: #f5f5f5;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  }
+
+  header h1 {
+    font-size: 24px;
+    margin: 0;
+    font-weight: 500;
+  }
+
+  /* Toggle Button */
+  .mode-toggle {
+    background-color: transparent;
+    border: none;
+    color: #f5f5f5;
+    font-size: 30px;
+    cursor: pointer;
+    transition: transform 0.2s ease-in-out;
+  }
+
+  .mode-toggle:hover {
+    transform: scale(1.1);
+  }
+
+  /* Main Content Section */
+  .section {
+    padding: 20px;
+    padding-bottom: 80px; /* Space for footer */
+  }
+
   .section-title {
     font-size: 22px;
-    margin: 20px 0 10px;
-    color: #f5f5f5;
+    margin: 20px 0;
+    font-weight: 600;
   }
 
   .carousel-container {
     display: flex;
     overflow-x: auto;
-    scroll-behavior: smooth;
     gap: 12px;
     padding: 10px 0;
     white-space: nowrap;
   }
 
+  /* Carousel Item Styling */
   .carousel-item {
     flex: 0 0 auto;
-    width: 150px;
-    border-radius: 10px;
+    width: 160px;
+    height: 250px;
     background-color: #1e1e1e;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-    transition: transform 0.3s;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    transition: transform 0.3s, box-shadow 0.3s;
     overflow: hidden;
+    cursor: pointer;
+    margin: 10px;
   }
 
   .carousel-item:hover {
     transform: scale(1.05);
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.4);
   }
 
-  .carousel-item img {
+  /* Image Container */
+  .image-container {
     width: 100%;
-    border-top-left-radius: 10px;
-    border-top-right-radius: 10px;
+    height: 70%;
+    overflow: hidden;
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
+  }
+
+  .image-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease-in-out;
+  }
+
+  /* Title Container */
+  .title-container {
+    padding: 12px;
+    background-color: #282828;
+    border-bottom-left-radius: 12px;
+    border-bottom-right-radius: 12px;
   }
 
   .title {
     font-size: 14px;
     font-weight: bold;
     color: #ffffff;
-    padding: 8px;
-    white-space: normal;
-    overflow: hidden;
     text-overflow: ellipsis;
-    max-height: 2.8em;
-    line-height: 1.4em;
+    white-space: nowrap;
+    overflow: hidden;
+  }
+
+  /* Loading State */
+  .loading {
+    animation: shimmer 1.5s infinite linear;
+    background: linear-gradient(to right, #333 8%, #444 18%, #333 33%);
+    background-size: 800px 100%;
+  }
+
+  @keyframes shimmer {
+    0% {
+      background-position: -800px 0;
+    }
+    100% {
+      background-position: 800px 0;
+    }
+  }
+
+  /* Footer */
+  footer {
+    background-color: #333;
+    padding: 12px;
+    text-align: center;
+    color: #f5f5f5;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    font-size: 14px;
+  }
+
+  /* Media Queries for Responsiveness */
+  @media (max-width: 768px) {
+    .carousel-container {
+      gap: 8px;
+    }
+
+    .carousel-item {
+      width: 130px;
+      height: 200px;
+    }
+
+    .image-container img {
+      object-fit: cover;
+    }
   }
 </style>
 </head>
-<body>
+<body class="dark-mode">
 
+<!-- Header -->
+<header>
+  <h1>Movie Carousel</h1>
+  <button class="mode-toggle" onclick="toggleMode()">🌙</button> <!-- Dark/Light Mode Toggle -->
+</header>
+
+<!-- Main Content -->
 <div class="section">
-  <div class="section-title">Movies Section</div>
+  <div class="section-title">Trending Movies</div>
   <div class="carousel-container" id="movies-carousel">
-    <!-- Movie items will be displayed here -->
+    <!-- Placeholder for loading -->
+    <div class="carousel-item">
+      <div class="image-container loading"></div>
+      <div class="title-container loading" style="height: 48px;"></div>
+    </div>
+    <div class="carousel-item">
+      <div class="image-container loading"></div>
+      <div class="title-container loading" style="height: 48px;"></div>
+    </div>
+    <div class="carousel-item">
+      <div class="image-container loading"></div>
+      <div class="title-container loading" style="height: 48px;"></div>
+    </div>
   </div>
 </div>
 
+<!-- Footer -->
+<footer>
+  <p>&copy; 2024 Movie Carousel. All rights reserved.</p>
+</footer>
+
 <script>
+// Function to fetch movie data
 async function fetchMovies(apiUrl) {
   const response = await fetch(apiUrl);
   const data = await response.json();
   return data.results;
 }
 
+// Function to display movies
 function displayMovies(movies, containerId) {
   const carousel = document.getElementById(containerId);
-  carousel.innerHTML = ''; // Clear any existing items
+  carousel.innerHTML = ''; // Clear placeholder items
 
   movies.forEach(movie => {
     const item = document.createElement('div');
     item.classList.add('carousel-item');
     item.innerHTML = `
-      <img src="${movie.sources[0].thumbnail}" alt="${movie.Title2}">
-      <div class="title">${movie.Title2} (${movie.year})</div>
+      <div class="image-container">
+        <img src="${movie.sources[0].thumbnail}" alt="${movie.Title2}">
+      </div>
+      <div class="title-container">
+        <div class="title">${movie.Title2} (${movie.year})</div>
+      </div>
     `;
     
-    // Pass movie data as query parameters
     item.addEventListener('click', () => {
       const movieData = {
         title: movie.Title2,
@@ -104,8 +245,6 @@ function displayMovies(movies, containerId) {
           fileSize: source.fileSize
         }))
       };
-      
-      // Redirect to the second page with movie data in query string
       window.location.href = `video_page.html?data=${encodeURIComponent(JSON.stringify(movieData))}`;
     });
 
@@ -118,6 +257,19 @@ fetchMovies('https://mymoviesclan-api.vercel.app/api/anime')
   .then(movies => displayMovies(movies, 'movies-carousel'))
   .catch(console.error);
 
+// Toggle Dark/Light Mode
+function toggleMode() {
+  const body = document.body;
+  const modeButton = document.querySelector('.mode-toggle');
+
+  if (body.classList.contains('dark-mode')) {
+    body.classList.replace('dark-mode', 'light-mode');
+    modeButton.textContent = '🌞'; // Sun icon for light mode
+  } else {
+    body.classList.replace('light-mode', 'dark-mode');
+    modeButton.textContent = '🌙'; // Moon icon for dark mode
+  }
+}
 </script>
 
 </body>
