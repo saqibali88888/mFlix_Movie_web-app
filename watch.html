@@ -6,35 +6,42 @@
 <title>Watch Movie</title>
 <link rel="stylesheet" href="https://cdn.plyr.io/3.6.12/plyr.css" />
 <style>
-  
+
+  /* Movie details container */
   .movie-details {
     max-width: 800px;
-    margin: 20px;
+    margin: 20px auto;
     text-align: center;
-  }
-
-  .movie-thumbnail {
-    max-width: 100%;
+    padding: 20px;
+    background-color: #1e1e1e;
     border-radius: 10px;
   }
 
+  /* Movie thumbnail (not shown as we use poster image for video player) */
+  .movie-thumbnail {
+    display: none;  /* Hide the thumbnail */
+  }
+
+  /* Movie title and year styles */
   .movie-title {
-    font-size: 24px;
+    font-size: 30px;
     font-weight: bold;
-    margin-top: 10px;
+    margin-top: 20px;
   }
 
   .movie-year {
-    font-size: 18px;
+    font-size: 20px;
     color: #bbb;
   }
 
+  /* Video player style */
   .video-player {
     width: 100%;
     max-width: 800px;
-    margin: 20px 0;
+    margin: 20px auto;
   }
 
+  /* Quality option buttons */
   .quality-options {
     display: flex;
     justify-content: center;
@@ -42,6 +49,22 @@
     margin: 15px 0;
   }
 
+  .quality-options button {
+    padding: 10px;
+    border-radius: 5px;
+    background-color: #ff5722;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s;
+  }
+
+  .quality-options button:hover {
+    background-color: #e64a19;
+  }
+
+  /* Download button */
   .download-btn {
     text-decoration: none;
     color: #fff;
@@ -49,6 +72,7 @@
     background-color: #ff5722;
     border-radius: 5px;
     display: inline-block;
+    margin-top: 20px;
     transition: background-color 0.3s;
   }
 
@@ -58,41 +82,40 @@
 </style>
 </head>
 
-
 <body class="dark-mode">
- 
 
   <!-- Header -->
-<div id="header-placeholder"></div>
+  <div id="header-placeholder"></div>
 
-<div class="movie-details">
-  <img id="thumbnail" src="" alt="Movie Thumbnail" class="movie-thumbnail">
-  <div class="movie-title" id="movieTitle"></div>
-  <div class="movie-year" id="movieYear"></div>
-</div>
+  <!-- Movie Details Section -->
+  <div class="movie-details">
+    <img id="thumbnail" src="" alt="Movie Thumbnail" class="movie-thumbnail">
+    <div class="movie-title" id="movieTitle"></div>
+    <div class="movie-year" id="movieYear"></div>
+  </div>
 
-<div class="video-player">
-  <video id="player" controls crossorigin playsinline poster="">
-    <!-- Video quality sources will be populated here by JavaScript -->
-  </video>
-</div>
+  <!-- Video Player Section -->
+  <div class="video-player">
+    <video id="player" controls crossorigin playsinline poster="">
+      <!-- Video quality sources will be populated here by JavaScript -->
+    </video>
+  </div>
 
-<div class="quality-options" id="qualityOptions">
-  <!-- Quality option buttons will be added here -->
-</div>
+  <!-- Quality Options -->
+  <div class="quality-options" id="qualityOptions">
+    <!-- Quality option buttons will be added here -->
+  </div>
 
-<a id="downloadLink" href="#" target="_blank" class="download-btn">Download</a>
+  <!-- Download Link -->
+  <a id="downloadLink" href="#" target="_blank" class="download-btn">Download</a>
 
-
-  <!-- footer -->
+  <!-- Footer -->
   <div id="footer-placeholder"></div>
 
-  
+  <!-- Plyr Script -->
+  <script src="https://cdn.plyr.io/3.6.12/plyr.polyfilled.js"></script>
 
-<script src="https://cdn.plyr.io/3.6.12/plyr.polyfilled.js"></script>
-
-  
-<script>
+  <script>
     // Extract title from the URL query parameters
     const urlParams = new URLSearchParams(window.location.search);
     const title2 = decodeURIComponent(urlParams.get('title'));
@@ -105,9 +128,8 @@
       // Populate movie details
       document.getElementById('movieTitle').textContent = movieData.title;
       document.getElementById('movieYear').textContent = movieData.year;
-      document.getElementById('thumbnail').src = movieData.thumbnail;
 
-      // Get video element and set poster image
+      // Set the poster image for the video player
       const playerElement = document.getElementById('player');
       playerElement.setAttribute('poster', movieData.thumbnail);
 
@@ -124,13 +146,6 @@
         // Create button for each quality option
         const button = document.createElement('button');
         button.textContent = `${quality.quality} (${quality.fileSize})`;
-        button.style.padding = '10px';
-        button.style.borderRadius = '5px';
-        button.style.backgroundColor = index === 0 ? '#ff5722' : '#333';
-        button.style.color = '#fff';
-        button.style.border = 'none';
-        button.style.cursor = 'pointer';
-
         button.addEventListener('click', () => {
           playerElement.querySelectorAll('source').forEach(src => {
             if (src.getAttribute('size') === quality.quality.match(/\d+/)[0]) {
@@ -148,10 +163,10 @@
       document.getElementById('downloadLink').href = movieData.downloadLink; 
 
       // Initialize Plyr with quality control enabled
-  const player = new Plyr(playerElement, {
-    controls: ['play', 'play-large', 'fast-forward', 'progress', 'current-time', 'mute', 'volume', 'download', 'settings', 'fullscreen'],
-    settings: ['quality']
-  });
+      const player = new Plyr(playerElement, {
+        controls: ['play', 'play-large', 'fast-forward', 'progress', 'current-time', 'mute', 'volume', 'download', 'settings', 'fullscreen'],
+        settings: ['quality']
+      });
 
     } else {
       // Redirect back to the index page if movie data doesn't match
@@ -169,6 +184,7 @@
       .then(response => response.text())
       .then(data => document.getElementById('footer-placeholder').innerHTML = data);
   </script>
-  
-<!-- Darkmode Script -->
-<script src="src/js/script.js"></script>
+
+  <!-- Darkmode Script -->
+  <script src="src/js/script.js"></script>
+
