@@ -114,7 +114,7 @@ function displayMovies(movies, containerId) {
 }
 
 // Fetch and display movies
-fetchMovies('https://watchoflix-api.onrender.com/api/anime')
+fetchMovies('https://mymoviesclan-api.vercel.app/api/anime')
   .then(movies => displayMovies(movies, 'movies-carousel'))
   .catch(console.error);
 
