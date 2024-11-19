@@ -1,6 +1,9 @@
 # mFlix web-app 🔥
 
-> This web-app Is Made using Html language and mymoviesclan Api (for backend) by Me
+> This web-app Is Made using Html language and mymoviesclan Api (for backend) by Me.
+
+
+![image](https://cdn.pixabay.com/photo/2024/05/26/15/27/anime-8788959_1280.jpg)
 
 ## See Live Demo👀
 
