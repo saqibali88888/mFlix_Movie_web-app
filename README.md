@@ -18,4 +18,4 @@
 
 You can contact the us via email, or join the telegram group (Recommended).
 
-<b>Join Telegram Help Group:- https://t.me/webcoderhub</b>
+<b>Join Telegram Group:- https://t.me/webcoderhub</b>
