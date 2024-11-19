@@ -142,7 +142,13 @@
       });
 
       // Set the download link
-      document.getElementById('downloadLink').href = movieData.downloadLink;
+      document.getElementById('downloadLink').href = movieData.downloadLink; 
+
+      // Initialize Plyr with quality control enabled
+  const player = new Plyr(playerElement, {
+    controls: ['play', 'fast-forward', 'progress', 'current-time', 'mute', 'volume', 'download', 'settings', 'fullscreen'],
+    settings: ['quality']
+  });
 
     } else {
       // Redirect back to the index page if movie data doesn't match
