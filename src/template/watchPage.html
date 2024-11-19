@@ -87,6 +87,12 @@
 
 <a id="downloadLink" href="#" target="_blank" class="download-btn">Download</a>
 
+
+  <!-- footer -->
+  <div id="footer-placeholder"></div>
+
+  
+
 <script src="https://cdn.plyr.io/3.6.12/plyr.polyfilled.js"></script>
 <script>
   // Parse URL to get movie data
@@ -144,6 +150,19 @@
     settings: ['quality']
   });
 </script>
+
+
+  <script>
+    // Load Header and Footer using JavaScript
+    fetch('src/template/header.html')
+      .then(response => response.text())
+      .then(data => document.getElementById('header-placeholder').innerHTML = data);
+
+    fetch('src/template/footer.html')
+      .then(response => response.text())
+      .then(data => document.getElementById('footer-placeholder').innerHTML = data);
+  </script>
+  
 
 </body>
 </html>
