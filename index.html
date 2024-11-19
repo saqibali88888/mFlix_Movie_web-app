@@ -245,7 +245,7 @@ function displayMovies(movies, containerId) {
           fileSize: source.fileSize
         }))
       };
-      window.location.href = `video_page.html?data=${encodeURIComponent(JSON.stringify(movieData))}`;
+      window.location.href = `src/template/watchPage.html?data=${encodeURIComponent(JSON.stringify(movieData))}`;
     });
 
     carousel.appendChild(item);
