@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>View All Movies</title>
+</head>
+<body>
+  <h1>Movies</h1>
+  <div id="movie-list"></div> <!-- Here the movie details will be displayed -->
+
+  <script>
+    // Retrieve category from the URL query parameters
+    const urlParams = new URLSearchParams(window.location.search);
+    const category = urlParams.get('category');
+
+    // Fetch and display movies for the category
+    async function fetchMoviesByCategory(category) {
+      const apiUrl = `${BASE_API_URL}/${category}`; // Adjust API URL based on category
+      const response = await fetch(apiUrl);
+      const data = await response.json();
+      const movies = data.results;
+
+      displayMovieList(movies);
+    }
+
+    // Display the movie list on the page
+    function displayMovieList(movies) {
+      const movieList = document.getElementById('movie-list');
+      movieList.innerHTML = ''; // Clear existing content
+
+      movies.forEach(movie => {
+        const movieDiv = document.createElement('div');
+        movieDiv.classList.add('movie-item');
+        movieDiv.innerHTML = `
+          <img src="${movie.sources[0].thumbnail}" alt="${movie.Title2}">
+          <div>
+            <h3>${movie.Title2} (${movie.year})</h3>
+            <p>Quality: ${movie.sources[0].quality}</p>
+          </div>
+        `;
+        movieList.appendChild(movieDiv);
+      });
+    }
+
+    // Fetch and display movies based on the category
+    fetchMoviesByCategory(category);
+  </script>
+</body>
+</html>
