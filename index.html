@@ -271,7 +271,9 @@
 
 <!-- Hollywood Movie Content -->
 <div class="section">
-  <div class="section-title">Hollywood Movie<a href="#view-all" class="view-all">View All</a></div>
+  <div class="section-title">Hollywood Movie
+	  <a href="src/template/view-all.html?category=hollywood-movie" class="view-all">View All</a>
+  </div>
   
   <div class="scrollBtn-wrapper">
     <button class="scroll-nav left" id="prev-btn-hollywood-movie" onclick="scrollCarousel('hollywood-movie', -1)"><i class="fa fa-angle-left"></i></button>
@@ -696,7 +698,7 @@
     }
 
     // Function to display movies
-    function displayMovies(movies, containerId) {
+    function displayMovies(movies, containerId, category) {
       const carousel = document.getElementById(containerId);
       carousel.innerHTML = ''; // Clear placeholder items
 
@@ -729,7 +731,7 @@
           localStorage.setItem('movieData', JSON.stringify(movieData));
 
           // Navigate to the watch page with the movie title in the URL
-          window.location.href = `watch.html?title=${encodeURIComponent(movie.Title2)}`;
+          window.location.href = `watch.html?title=${encodeURIComponent(movie.Title2)}&category=${category}`;
         });
 
         carousel.appendChild(item);
