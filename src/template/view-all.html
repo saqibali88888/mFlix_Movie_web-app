@@ -9,11 +9,9 @@
   <h1>Movies</h1>
   <div id="movie-list"></div> <!-- Here the movie details will be displayed -->
 
-  
   <!-- the api config file (must on all js top) -->
   <script src="src/api/config.js"></script>
 
-  
   <script>
     // Retrieve category from the URL query parameters
     const urlParams = new URLSearchParams(window.location.search);
@@ -44,6 +42,28 @@
             <p>Quality: ${movie.sources[0].quality}</p>
           </div>
         `;
+
+        // Add click event to redirect and pass data
+        movieDiv.addEventListener('click', () => {
+          const movieData = {
+            title: movie.Title2,
+            year: movie.year,
+            thumbnail: movie.sources[0].thumbnail,
+            qualities: movie.sources.map(source => ({
+              quality: source.quality,
+              streamUrl: source.stream_url,
+              fileSize: source.file_size
+            })),
+            downloadLink: movie.sources[0].stream_url // Assuming the first source is for download
+          };
+
+          // Save data to localStorage
+          localStorage.setItem('movieData', JSON.stringify(movieData));
+
+          // Redirect to watch.html
+          window.location.href = `watch.html?title=${encodeURIComponent(movie.Title2)}`;
+        });
+
         movieList.appendChild(movieDiv);
       });
     }
@@ -55,6 +75,6 @@
 
   <script src="https://cdn.jsdelivr.net/npm/eruda"></script>
 <script>eruda.init();</script>
-  
+
 </body>
 </html>
