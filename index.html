@@ -657,7 +657,8 @@
   </div>
 </footer>
 
-
+<!-- the api config file (must on all js top) -->
+<script src="src/api/config.js"></script>
 
 <script>
   function scrollCarousel(type, direction) {
@@ -723,7 +724,7 @@
     }
 
     // Fetch and display Anime
-    fetchMovies('https://mymoviesclan-api.vercel.app/api/anime')
+    fetchMovies(`${BASE_API_URL}/anime`)
       .then(movies => displayMovies(movies, 'movies-carousel-anime'))
       .catch(console.error);
       
