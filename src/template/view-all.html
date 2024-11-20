@@ -61,7 +61,7 @@
           localStorage.setItem('movieData', JSON.stringify(movieData));
 
           // Redirect to watch.html
-          window.location.href = `watch.html?title=${encodeURIComponent(movie.Title2)}`;
+          window.location.href = `/watch.html?title=${encodeURIComponent(movie.Title2)}`;
         });
 
         movieList.appendChild(movieDiv);
