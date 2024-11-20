@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Watch Movie</title>
+
+<link rel="stylesheet" href="https://cdn.plyr.io/3.6.12/plyr.css" />
+<!-- Plyr Script -->
+  <script src="https://cdn.plyr.io/3.6.12/plyr.polyfilled.js"></script>
+  
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet"> <!-- Add Font Awesome -->
+	
+<style>
+	/* General Body Styles */
+  body {
+    font-family: 'Roboto', sans-serif;
+    margin: 0;
+    padding: 0;
+    transition: background-color 0.3s, color 0.3s;
+  }
+
+  /* Dark Mode Styling */
+  body.dark-mode {
+    background-color: #121212;
+    color: #ffffff;
+  }
+
+  /* Light Mode Styling */
+  body.light-mode {
+    background-color: #ffffff;
+    color: #121212;
+  }
+
+  /* Header Styling */
+  header {
+    background-color: #222;
+    padding: 10px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: #ffffff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+
+  header a {
+    font-size: 20px;
+    margin: 0;
+    font-weight: bold;
+    color: white;
+    text-decoration: none; 
+  } 
+  
+  .headerIcon {
+    display: flex;
+    gap: 10px; /* Adjust gap size as needed */
+    align-items: center;
+  }
+
+  /* Toggle and Search Button */
+  .mode-toggle, .searchbtn {
+    background-color: #444;
+    border: none;
+    border-radius: 50%;
+    width: 38px;
+    height: 38px;
+    color: #ffffff;
+    font-size: 20px;
+    cursor: pointer;
+    transition: transform 0.2s ease-in-out, background-color 0.3s;
+  }
+
+  .mode-toggle:hover, .searchbtn:hover {
+    transform: scale(1.1);
+    background-color: #555;
+  }
+
+  /* Movie details container */
+  .movie-details {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #1e1e1e;
+    border-radius: 10px;
+  }
+
+  /* Movie thumbnail (not shown as we use poster image for video player) */
+  .download-btn {
+    display: none;  /* Hide the thumbnail */
+  }
+
+  /* Movie title and year styles */
+  .movie-title {
+    font-size: 16px;
+    font-weight: bold;
+  }
+
+  .movie-year {
+    font-size: 14px;
+    color: #bbb;
+  }
+
+  /* Video player style */
+  #player {
+    width: 100%; /* Fixed width */
+    height: 220px; /* Fixed height */
+    object-fit: cover; /* Ensures video or poster fits the defined area */
+    border-radius: 5px; /* Optional: Adds rounded corners */
+    background-color: black; /* Fallback for poster image loading */
+  }
+
+  /* Optional: Ensure the parent container respects the fixed dimensions */
+  .video-player {
+    width: 100%;
+    max-width: 800px;
+    height: 220px;
+    margin: 20px auto;
+    border-radius: 5px; /* Optional: Adds rounded corners */
+    overflow: hidden; /* Prevent overflow issues */
+  }
+
+  /* Quality option buttons */
+  .quality-options {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin: 15px 0;
+  }
+
+  .quality-options button {
+    padding: 5px 10px;
+    border-radius: 5px;
+    background-color: #ff5722;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    font-size: 15px;
+    transition: background-color 0.3s;
+  }
+
+  .quality-options button:hover {
+    background-color: #e64a19;
+  }
+
+  /* Download button */
+  .download-btn {
+    text-decoration: none;
+    color: #fff;
+    padding: 10px 20px;
+    background-color: #ff5722;
+    border-radius: 5px;
+    display: inline-block;
+    margin-top: 20px;
+    transition: background-color 0.3s;
+  }
+
+  .download-btn:hover {
+    background-color: #e64a19;
+  }
+</style>
+</head>
+
+  <body class="light-mode">
+
+  <!-- Header -->
+<header>
+  <a href="/" target="_blank">mFlix web-app</a>
+  <div class="headerIcon">
+  <!-- Search Button -->
+  <button class="searchbtn" onclick="window.location.href='https://example.com/search';">
+    <i class="fas fa-search"></i>
+  </button>
+  
+  <!-- Mode Toggle Button -->
+  <button class="mode-toggle" onclick="toggleMode()">
+    <i class="fas fa-sun"></i>
+  </button>
+  </div>
+</header>
+
+
+<!-- Video Player Section -->
+  <div class="video-player" style="margin-top: 0px;">
+    <video id="player" controls crossorigin playsinline poster="">
+      <!-- Video quality sources will be populated here by JavaScript -->
+    </video>
+  </div>
+
+<!-- Main Container -->
+<div class="main-container" style="margin: 10px;">
+
+  
+  
+  <!-- Movie Details Section -->
+  <div class="movie-details">
+    <div class="movie-title" id="movieTitle"></div>
+    <div class="movie-year" id="movieYear"></div>
+  </div>
+
+  <!-- Quality Options -->
+  <div class="quality-options" id="qualityOptions">
+    <!-- Quality option buttons will be added here -->
+  </div>
+
+  <!-- Download Link -->
+  <a id="downloadLink" href="#" target="_blank" class="download-btn" style="display: none;">Download</a> <!-- for now it is hidden i will fix this later -->
+  
+  
+  </div>
+
+  <!-- Footer -->
+  <footer>
+  <div class="footer" style="margin-top: 20px; border-radius: 10px; box-shadow: rgba(0, 0, 0, 0.1) 0px 5px 35px; box-sizing: border-box; padding:15px; position: relative; left:20; bottom:10; width:90%; text-align: center; background-color: #222; font-size: 14px;  color: #fff;">
+    <div class="made-with-love" style="color: #ff9800; margin: 5px 0;">Made with ❤ by WebCoderHub</div>
+    
+    <div class="social-links" style="
+        margin-top: 10px; margin-bottom: 10px;">
+        <a href="https://github.com/" target="_blank" style="
+            margin: 0 10px; 
+            color: #fff; 
+            text-decoration: none; 
+            font-size: 16px;">
+            <i class="fab fa-github"></i>
+        </a>
+        <a href="https://twitter.com/" target="_blank" style="
+            margin: 0 10px; 
+            color: #fff; 
+            text-decoration: none; 
+            font-size: 16px;">
+            <i class="fab fa-twitter"></i>
+        </a>
+        <a href="https://linkedin.com/" target="_blank" style="
+            margin: 0 10px; 
+            color: #fff; 
+            text-decoration: none; 
+            font-size: 16px;">
+            <i class="fab fa-linkedin"></i>
+        </a>
+    </div>
+    
+    <div>
+      © <span id='getYear'>
+      <script>
+
+      /*<![CDATA[*/ var d = new Date(); var n = d.getFullYear(); document.getElementById('getYear').innerHTML = n; /*]]>*/
+      </script></span> ‧
+      <bdi>
+        <a href='https://t.me/webcoderhub' style="color:red; text-decoration: none;">WebCoderHub</a>
+      </bdi>‧ All rights reserved.
+    </div>
+  </div>
+</footer>
+  
+
+  <script>
+    // Extract title from the URL query parameters
+    const urlParams = new URLSearchParams(window.location.search);
+    const title2 = decodeURIComponent(urlParams.get('title'));
+
+    // Fetch the movie data stored in localStorage
+    const movieData = JSON.parse(localStorage.getItem('movieData'));
+
+    // Check if movie data is available and matches the requested title
+    if (movieData && movieData.title === title2) {
+      // Populate movie details
+      document.getElementById('movieTitle').textContent = movieData.title;
+      document.getElementById('movieYear').textContent = movieData.year;
+
+      // Set the poster image for the video player
+      const playerElement = document.getElementById('player');
+      playerElement.setAttribute('poster', movieData.thumbnail);
+
+
+      // Populate video sources and add quality option buttons
+      const qualityOptionsContainer = document.getElementById('qualityOptions');
+      movieData.qualities.forEach((quality, index) => {
+        // Create source element for each quality
+        const source = document.createElement('source');
+        source.src = quality.streamUrl;
+        source.type = 'video/mp4';
+        source.setAttribute('size', quality.quality.match(/\d+/)[0]);
+        playerElement.appendChild(source);
+
+        // Create button for each quality option
+        const button = document.createElement('button');
+        button.textContent = `${quality.quality} (${quality.fileSize})`;
+        button.addEventListener('click', () => {
+          playerElement.querySelectorAll('source').forEach(src => {
+            if (src.getAttribute('size') === quality.quality.match(/\d+/)[0]) {
+              playerElement.src = src.src;
+            }
+          });
+          playerElement.load();
+          playerElement.play();
+        });
+
+        qualityOptionsContainer.appendChild(button);
+      });
+
+      // Set the download link
+      document.getElementById('downloadLink').href = movieData.downloadLink; 
+
+      // Initialize Plyr with quality control enabled
+      const player = new Plyr(playerElement, {
+        controls: ['play', 'play-large', 'fast-forward', 'progress', 'current-time', 'mute', 'volume', 'download', 'settings', 'fullscreen'],
+        settings: ['quality']
+      });
+
+    } else {
+      // Redirect back to the index page if movie data doesn't match
+      window.location.href = 'index.html'; // You can change this to another page if needed
+    }
+  </script>
+
+  
+
+  <!-- Dark mode Toogle -->
+  <script>
+    // Toggle Dark/Light Mode
+    function toggleMode() {
+      const body = document.body;
+      const modeButton = document.querySelector('.mode-toggle i');
+
+      if (body.classList.contains('dark-mode')) {
+        body.classList.replace('dark-mode', 'light-mode');
+        modeButton.classList.replace('fa-moon', 'fa-sun'); // Sun icon for light mode
+      } else {
+        body.classList.replace('light-mode', 'dark-mode');
+        modeButton.classList.replace('fa-sun', 'fa-moon'); // Moon icon for dark mode
+      }
+    }
+</script>
