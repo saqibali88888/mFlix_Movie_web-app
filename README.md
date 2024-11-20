@@ -5,6 +5,10 @@
 
 ![image](https://cdn.pixabay.com/photo/2024/05/26/15/27/anime-8788959_1280.jpg)
 
+
+[![Netlify Status](https://api.netlify.com/api/v1/badges/af59c434-be65-4a3a-b8ae-7500cb458db7/deploy-status)](https://app.netlify.com/sites/mymoviesclan/deploys)
+
+
 ## See Live Demo👀
 
 👉 <b>[Click Here To See](https://mymoviesclan.netlify.app/)<b>
