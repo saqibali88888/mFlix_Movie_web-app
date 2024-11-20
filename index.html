@@ -729,47 +729,47 @@
       .catch(console.error);
       
       // Fetch and display Kdrama
-    fetchMovies('https://mymoviesclan-api.vercel.app/api/kdrama')
+    fetchMovies(`${BASE_API_URL}/kdrama`)
       .then(movies => displayMovies(movies, 'movies-carousel-kdrama'))
       .catch(console.error);
       
       // Fetch and display bollywood-movie
-    fetchMovies('https://mymoviesclan-api.vercel.app/api/bollywood-movie')
+    fetchMovies(`${BASE_API_URL}/bollywood-movie`)
       .then(movies => displayMovies(movies, 'movies-carousel-bollywood-movie'))
       .catch(console.error);
       
       // Fetch and display hollywood-movie
-    fetchMovies('https://mymoviesclan-api.vercel.app/api/hollywood-movie')
+    fetchMovies(`${BASE_API_URL}/hollywood-movie`)
       .then(movies => displayMovies(movies, 'movies-carousel-hollywood-movie'))
       .catch(console.error);
       
       
       // Fetch and display hindi-series
-    fetchMovies('https://mymoviesclan-api.vercel.app/api/hindi-series')
+    fetchMovies(`${BASE_API_URL}/hindi-series`)
       .then(movies => displayMovies(movies, 'movies-carousel-hindi-series'))
       .catch(console.error);
       
       
       // Fetch and display english-series
-    fetchMovies('https://mymoviesclan-api.vercel.app/api/english-series')
+    fetchMovies(`${BASE_API_URL}/english-series`)
       .then(movies => displayMovies(movies, 'movies-carousel-english-series'))
       .catch(console.error);
       
       
       // Fetch and display chinese-movie
-    fetchMovies('https://mymoviesclan-api.vercel.app/api/chinese-movie')
+    fetchMovies(`${BASE_API_URL}/chinese-movie`)
       .then(movies => displayMovies(movies, 'movies-carousel-chinese-movie'))
       .catch(console.error);
       
       
       // Fetch and display south-movie
-    fetchMovies('https://mymoviesclan-api.vercel.app/api/south-movie')
+    fetchMovies(`${BASE_API_URL}/south-movie`)
       .then(movies => displayMovies(movies, 'movies-carousel-south-movie'))
       .catch(console.error);
       
       
       // Fetch and display korean-movie
-    fetchMovies('https://mymoviesclan-api.vercel.app/api/korean-movie')
+    fetchMovies(`${BASE_API_URL}/korean-movie`)
       .then(movies => displayMovies(movies, 'movies-carousel-korean-movie'))
       .catch(console.error);
   </script>
