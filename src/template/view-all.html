@@ -19,7 +19,7 @@
 
     // Fetch and display movies for the category
     async function fetchMoviesByCategory(category) {
-      const apiUrl = `https://mymoviesclan-api.vercel.app/api/${category}`; // Adjust API URL based on category
+      const apiUrl = `https://mymoviesclan-demo-api.vercel.app/api/${category}`; // Adjust API URL based on category
       const response = await fetch(apiUrl);
       const data = await response.json();
       const movies = data.results;
