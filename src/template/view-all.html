@@ -4,14 +4,13 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>View All Movies</title>
-
   <style>
     /* General Body Styling */
     body {
       font-family: 'Roboto', Arial, sans-serif;
       margin: 0;
       padding: 0;
-      
+      background-color: #121212; /* Dark Background for OTT look */
       color: #ffffff;
     }
 
@@ -27,7 +26,7 @@
     #movie-list {
       display: grid;
       grid-template-columns: repeat(3, 1fr); /* Exactly 3 columns */
-      gap: 10px;
+      gap: 20px;
       padding: 20px;
       max-width: 1200px;
       margin: 0 auto;
@@ -38,21 +37,21 @@
       background: linear-gradient(145deg, #1e1e1e, #2a2a2a); /* Gradient background */
       border-radius: 12px;
       overflow: hidden;
-      box-shadow: 0 5px 5px rgba(0, 0, 0, 0.2);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
       transition: transform 0.3s ease, box-shadow 0.3s ease;
       cursor: pointer;
     }
 
     .movie-item:hover {
       transform: scale(1.05);
-      box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.5);
     }
 
     /* Movie Thumbnail */
     .movie-item img {
       width: 100%;
-      height: 150px;
-      object-fit: fill;
+      height: 300px;
+      object-fit: cover;
       border-bottom: 2px solid #ff5722;
     }
 
@@ -62,16 +61,16 @@
     }
 
     .movie-item h3 {
-      font-size: 12px;
-      margin: 5px 0 5px;
+      font-size: 18px;
+      margin: 10px 0 5px;
       color: #ffffff;
     }
 
     .movie-item p {
-      font-size: 10px;
+      font-size: 14px;
       color: #b3b3b3;
       margin: 5px 0;
-    } 
+    }
 
     /* Pagination Buttons */
     .pagination {
@@ -99,128 +98,122 @@
       background-color: #555555;
       cursor: not-allowed;
     }
-    
+
+    /* Responsive Design for Small Screens */
+    @media (max-width: 900px) {
+      #movie-list {
+        grid-template-columns: repeat(2, 1fr); /* 2 columns for smaller screens */
+      }
+    }
+
+    @media (max-width: 600px) {
+      #movie-list {
+        grid-template-columns: repeat(1, 1fr); /* 1 column for very small screens */
+      }
+
+      .movie-item img {
+        height: 200px; /* Smaller height for thumbnails */
+      }
+    }
   </style>
 </head>
 <body>
-  
-  <h1 id="category-name"></h1> <!-- Placeholder for category name -->
-  <div id="movie-list"></div> <!-- Here the movie details will be displayed -->
-
+  <h1>Movies</h1>
+  <div id="movie-list"></div>
   <div class="pagination">
     <button id="prev-button" disabled>Previous</button>
     <button id="next-button">Next</button>
   </div>
 
-  <!-- the api config file (must on all js top) -->
-  <script src="src/api/config.js"></script>
-
   <script>
-  // Retrieve category from the URL query parameters
-  const urlParams = new URLSearchParams(window.location.search);
-  const category = urlParams.get('category');
-  
-  let currentPage = 1; // Initialize current page to 1
-  const apiBaseUrl = `https://mymoviesclan-demo-api.vercel.app/api/${category}`;
-  
-  // Display the category name on the page
-  function displayCategoryName(category) {
-    const categoryNameElement = document.getElementById('category-name');
-    const formattedCategory = category.replace(/-/g, ' ').toUpperCase(); // Format the category name
-    categoryNameElement.textContent = `Category: ${formattedCategory}`;
-  }
+    const urlParams = new URLSearchParams(window.location.search);
+    const category = urlParams.get('category') || 'movies'; // Default to 'movies' if no category is provided
+    let currentPage = 1; // Start from the first page
 
-  // Fetch and display movies for the current category and page
-  async function fetchMoviesByCategory(page) {
-    try {
-      const apiUrl = `${apiBaseUrl}?page=${page}`;
+    // Fetch movies for the specified category and page
+    async function fetchMoviesByCategory(category, page) {
+      const apiUrl = `https://mymoviesclan-demo-api.vercel.app/api/${category}?page=${page}`;
       const response = await fetch(apiUrl);
-      
-      if (!response.ok) throw new Error(`Error fetching data: ${response.statusText}`);
 
-      const data = await response.json();
-      const movies = data.results;
-
-      displayMovieList(movies);
-      updatePaginationButtons(data.previous, data.next);
-    } catch (error) {
-      console.error(error);
-      alert('Failed to load movies. Please try again later.');
+      if (response.ok) {
+        const data = await response.json();
+        const movies = data.results;
+        displayMovieList(movies);
+        return movies.length > 0; // Return whether more movies are available
+      } else {
+        console.error("Error fetching movies:", response.status);
+        return false;
+      }
     }
-  }
 
-  // Display the movie list on the page
-  function displayMovieList(movies) {
-    const movieList = document.getElementById('movie-list');
-    movieList.innerHTML = ''; // Clear existing content
+    // Display the movie list on the page
+    function displayMovieList(movies) {
+      const movieList = document.getElementById('movie-list');
+      movieList.innerHTML = ''; // Clear existing content
 
-    movies.forEach(movie => {
-      const movieDiv = document.createElement('div');
-      movieDiv.classList.add('movie-item');
-      movieDiv.innerHTML = `
-        <img src="${movie.sources[0].thumbnail}" alt="${movie.Title2}">
-        <div>
-          <h3>${movie.Title2}</h3>
-          <p>(${movie.year})</p>
-        </div>
-      `;
+      movies.forEach(movie => {
+        const movieDiv = document.createElement('div');
+        movieDiv.classList.add('movie-item');
+        movieDiv.innerHTML = `
+          <img src="${movie.sources[0].thumbnail}" alt="${movie.Title2}">
+          <div>
+            <h3>${movie.Title2} (${movie.year})</h3>
+            <p>Quality: ${movie.sources[0].quality}</p>
+          </div>
+        `;
 
-      // Add click event to redirect and pass data
-      movieDiv.addEventListener('click', () => {
-        const movieData = {
-          title: movie.Title2,
-          year: movie.year,
-          thumbnail: movie.sources[0].thumbnail,
-          qualities: movie.sources.map(source => ({
-            quality: source.quality,
-            streamUrl: source.streamUrl,
-            fileSize: source.fileSize
-          })),
-          downloadLink: movie.sources[0].streamUrl // Assuming the first source is for download
-        };
+        // Add click event to redirect and pass data
+        movieDiv.addEventListener('click', () => {
+          const movieData = {
+            title: movie.Title2,
+            year: movie.year,
+            thumbnail: movie.sources[0].thumbnail,
+            qualities: movie.sources.map(source => ({
+              quality: source.quality,
+              streamUrl: source.streamUrl,
+              fileSize: source.fileSize
+            })),
+            downloadLink: movie.sources[0].streamUrl // Assuming the first source is for download
+          };
 
-        // Save data to localStorage
-        localStorage.setItem('movieData', JSON.stringify(movieData));
+          // Save data to localStorage
+          localStorage.setItem('movieData', JSON.stringify(movieData));
 
-        // Redirect to watch.html
-        window.location.href = `/watch.html?title=${encodeURIComponent(movie.Title2)}`;
+          // Redirect to watch.html
+          window.location.href = `/watch.html?title=${encodeURIComponent(movie.Title2)}`;
+        });
+
+        movieList.appendChild(movieDiv);
       });
-
-      movieList.appendChild(movieDiv);
-    });
-  }
-
-  // Update the pagination buttons' states
-  function updatePaginationButtons(previous, next) {
-    const prevButton = document.getElementById('prev-button');
-    const nextButton = document.getElementById('next-button');
-
-    prevButton.disabled = !previous; // Disable if there's no previous page
-    nextButton.disabled = !next; // Disable if there's no next page
-  }
-
-  // Event listeners for pagination buttons
-  document.getElementById('prev-button').addEventListener('click', () => {
-    if (currentPage > 1) {
-      currentPage--;
-      fetchMoviesByCategory(currentPage);
     }
-  });
 
-  document.getElementById('next-button').addEventListener('click', () => {
-    currentPage++;
-    fetchMoviesByCategory(currentPage);
-  });
+    // Handle pagination buttons
+    async function handlePagination() {
+      const prevButton = document.getElementById('prev-button');
+      const nextButton = document.getElementById('next-button');
 
-  // Display the category name
-  displayCategoryName(category);
+      prevButton.disabled = currentPage === 1; // Disable "Previous" button on the first page
 
-  // Fetch and display movies for the initial page
-  fetchMoviesByCategory(currentPage);
-</script>
+      const hasNextPage = await fetchMoviesByCategory(category, currentPage);
 
+      nextButton.disabled = !hasNextPage; // Disable "Next" button if no more pages are available
+    }
 
-  <script src="https://cdn.jsdelivr.net/npm/eruda"></script>
-  <script>eruda.init();</script>
+    // Add event listeners for pagination buttons
+    document.getElementById('prev-button').addEventListener('click', () => {
+      if (currentPage > 1) {
+        currentPage--;
+        handlePagination();
+      }
+    });
+
+    document.getElementById('next-button').addEventListener('click', () => {
+      currentPage++;
+      handlePagination();
+    });
+
+    // Initial fetch
+    handlePagination();
+  </script>
 </body>
 </html>
