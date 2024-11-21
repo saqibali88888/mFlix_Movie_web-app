@@ -116,74 +116,109 @@
   <script src="src/api/config.js"></script>
 
   <script>
-    // Retrieve category from the URL query parameters
-    const urlParams = new URLSearchParams(window.location.search);
-    const category = urlParams.get('category');
+  // Retrieve category from the URL query parameters
+  const urlParams = new URLSearchParams(window.location.search);
+  const category = urlParams.get('category');
+  
+  let currentPage = 1; // Initialize current page to 1
+  const apiBaseUrl = `https://mymoviesclan-demo-api.vercel.app/api/${category}`;
+  
+  // Display the category name on the page
+  function displayCategoryName(category) {
+    const categoryNameElement = document.getElementById('category-name');
+    const formattedCategory = category.replace(/-/g, ' ').toUpperCase(); // Format the category name
+    categoryNameElement.textContent = `Category: ${formattedCategory}`;
+  }
 
-    // Display the category name on the page
-    function displayCategoryName(category) {
-      const categoryNameElement = document.getElementById('category-name');
-      const formattedCategory = category.replace(/-/g, ' ').toUpperCase(); // Format the category name
-      categoryNameElement.textContent = `Category: ${formattedCategory}`;
-    }
-
-    // Fetch and display movies for the category
-    async function fetchMoviesByCategory(category) {
-      const apiUrl = `https://mymoviesclan-demo-api.vercel.app/api/${category}`; // Adjust API URL based on category
+  // Fetch and display movies for the current category and page
+  async function fetchMoviesByCategory(page) {
+    try {
+      const apiUrl = `${apiBaseUrl}?page=${page}`;
       const response = await fetch(apiUrl);
+      
+      if (!response.ok) throw new Error(`Error fetching data: ${response.statusText}`);
+
       const data = await response.json();
       const movies = data.results;
 
       displayMovieList(movies);
+      updatePaginationButtons(data.previous, data.next);
+    } catch (error) {
+      console.error(error);
+      alert('Failed to load movies. Please try again later.');
     }
+  }
 
-    // Display the movie list on the page
-    function displayMovieList(movies) {
-      const movieList = document.getElementById('movie-list');
-      movieList.innerHTML = ''; // Clear existing content
+  // Display the movie list on the page
+  function displayMovieList(movies) {
+    const movieList = document.getElementById('movie-list');
+    movieList.innerHTML = ''; // Clear existing content
 
-      movies.forEach(movie => {
-        const movieDiv = document.createElement('div');
-        movieDiv.classList.add('movie-item');
-        movieDiv.innerHTML = `
-          <img src="${movie.sources[0].thumbnail}" alt="${movie.Title2}">
-          <div>
-            <h3>${movie.Title2}</h3>
-            <p>(${movie.year})</p>
-          </div>
-        `;
+    movies.forEach(movie => {
+      const movieDiv = document.createElement('div');
+      movieDiv.classList.add('movie-item');
+      movieDiv.innerHTML = `
+        <img src="${movie.sources[0].thumbnail}" alt="${movie.Title2}">
+        <div>
+          <h3>${movie.Title2}</h3>
+          <p>(${movie.year})</p>
+        </div>
+      `;
 
-        // Add click event to redirect and pass data
-        movieDiv.addEventListener('click', () => {
-          const movieData = {
-            title: movie.Title2,
-            year: movie.year,
-            thumbnail: movie.sources[0].thumbnail,
-            qualities: movie.sources.map(source => ({
-              quality: source.quality,
-              streamUrl: source.streamUrl,
-              fileSize: source.fileSize
-            })),
-            downloadLink: movie.sources[0].streamUrl // Assuming the first source is for download
-          };
+      // Add click event to redirect and pass data
+      movieDiv.addEventListener('click', () => {
+        const movieData = {
+          title: movie.Title2,
+          year: movie.year,
+          thumbnail: movie.sources[0].thumbnail,
+          qualities: movie.sources.map(source => ({
+            quality: source.quality,
+            streamUrl: source.streamUrl,
+            fileSize: source.fileSize
+          })),
+          downloadLink: movie.sources[0].streamUrl // Assuming the first source is for download
+        };
 
-          // Save data to localStorage
-          localStorage.setItem('movieData', JSON.stringify(movieData));
+        // Save data to localStorage
+        localStorage.setItem('movieData', JSON.stringify(movieData));
 
-          // Redirect to watch.html
-          window.location.href = `/watch.html?title=${encodeURIComponent(movie.Title2)}`;
-        });
-
-        movieList.appendChild(movieDiv);
+        // Redirect to watch.html
+        window.location.href = `/watch.html?title=${encodeURIComponent(movie.Title2)}`;
       });
+
+      movieList.appendChild(movieDiv);
+    });
+  }
+
+  // Update the pagination buttons' states
+  function updatePaginationButtons(previous, next) {
+    const prevButton = document.getElementById('prev-button');
+    const nextButton = document.getElementById('next-button');
+
+    prevButton.disabled = !previous; // Disable if there's no previous page
+    nextButton.disabled = !next; // Disable if there's no next page
+  }
+
+  // Event listeners for pagination buttons
+  document.getElementById('prev-button').addEventListener('click', () => {
+    if (currentPage > 1) {
+      currentPage--;
+      fetchMoviesByCategory(currentPage);
     }
+  });
 
-    // Display the category name
-    displayCategoryName(category);
+  document.getElementById('next-button').addEventListener('click', () => {
+    currentPage++;
+    fetchMoviesByCategory(currentPage);
+  });
 
-    // Fetch and display movies based on the category
-    fetchMoviesByCategory(category);
-  </script>
+  // Display the category name
+  displayCategoryName(category);
+
+  // Fetch and display movies for the initial page
+  fetchMoviesByCategory(currentPage);
+</script>
+
 
   <script src="https://cdn.jsdelivr.net/npm/eruda"></script>
   <script>eruda.init();</script>
