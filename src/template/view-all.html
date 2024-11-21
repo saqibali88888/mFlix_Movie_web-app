@@ -116,76 +116,108 @@
   <script src="src/api/config.js"></script>
 
   <script>
-    // Retrieve category from the URL query parameters
-    const urlParams = new URLSearchParams(window.location.search);
-    const category = urlParams.get('category');
+  // Retrieve category from the URL query parameters
+  const urlParams = new URLSearchParams(window.location.search);
+  const category = urlParams.get('category');
 
-    // Display the category name on the page
-    function displayCategoryName(category) {
-      const categoryNameElement = document.getElementById('category-name');
-      const formattedCategory = category.replace(/-/g, ' ').toUpperCase(); // Format the category name
-      categoryNameElement.textContent = `Category: ${formattedCategory}`;
-    }
+  // Track the current page
+  let currentPage = 1;
 
-    // Fetch and display movies for the category
-    async function fetchMoviesByCategory(category) {
-      const apiUrl = `https://mymoviesclan-demo-api.vercel.app/api/${category}`; // Adjust API URL based on category
+  // Display the category name on the page
+  function displayCategoryName(category) {
+    const categoryNameElement = document.getElementById('category-name');
+    const formattedCategory = category.replace(/-/g, ' ').toUpperCase(); // Format the category name
+    categoryNameElement.textContent = `Category: ${formattedCategory}`;
+  }
+
+  // Fetch and display movies for the category and page
+  async function fetchMoviesByCategory(category, page) {
+    const apiUrl = `https://mymoviesclan-demo-api.vercel.app/api/${category}?page=${page}`;
+    try {
       const response = await fetch(apiUrl);
       const data = await response.json();
-      const movies = data.results;
 
-      displayMovieList(movies);
+      displayMovieList(data.results);
+      updatePaginationButtons(data.totalPages); // Update pagination buttons
+    } catch (error) {
+      console.error('Error fetching movies:', error);
     }
+  }
 
-    // Display the movie list on the page
-    function displayMovieList(movies) {
-      const movieList = document.getElementById('movie-list');
-      movieList.innerHTML = ''; // Clear existing content
+  // Display the movie list on the page
+  function displayMovieList(movies) {
+    const movieList = document.getElementById('movie-list');
+    movieList.innerHTML = ''; // Clear existing content
 
-      movies.forEach(movie => {
-        const movieDiv = document.createElement('div');
-        movieDiv.classList.add('movie-item');
-        movieDiv.innerHTML = `
-          <img src="${movie.sources[0].thumbnail}" alt="${movie.Title2}">
-          <div>
-            <h3>${movie.Title2}</h3>
-            <p>(${movie.year})</p>
-          </div>
-        `;
+    movies.forEach(movie => {
+      const movieDiv = document.createElement('div');
+      movieDiv.classList.add('movie-item');
+      movieDiv.innerHTML = `
+        <img src="${movie.sources[0].thumbnail}" alt="${movie.Title2}">
+        <div>
+          <h3>${movie.Title2}</h3>
+          <p>(${movie.year})</p>
+        </div>
+      `;
 
-        // Add click event to redirect and pass data
-        movieDiv.addEventListener('click', () => {
-          const movieData = {
-            title: movie.Title2,
-            year: movie.year,
-            thumbnail: movie.sources[0].thumbnail,
-            qualities: movie.sources.map(source => ({
-              quality: source.quality,
-              streamUrl: source.streamUrl,
-              fileSize: source.fileSize
-            })),
-            downloadLink: movie.sources[0].streamUrl // Assuming the first source is for download
-          };
+      // Add click event to redirect and pass data
+      movieDiv.addEventListener('click', () => {
+        const movieData = {
+          title: movie.Title2,
+          year: movie.year,
+          thumbnail: movie.sources[0].thumbnail,
+          qualities: movie.sources.map(source => ({
+            quality: source.quality,
+            streamUrl: source.streamUrl,
+            fileSize: source.fileSize
+          })),
+          downloadLink: movie.sources[0].streamUrl // Assuming the first source is for download
+        };
 
-          // Save data to localStorage
-          localStorage.setItem('movieData', JSON.stringify(movieData));
+        // Save data to localStorage
+        localStorage.setItem('movieData', JSON.stringify(movieData));
 
-          // Redirect to watch.html
-          window.location.href = `/watch.html?title=${encodeURIComponent(movie.Title2)}`;
-        });
-
-        movieList.appendChild(movieDiv);
+        // Redirect to watch.html
+        window.location.href = `/watch.html?title=${encodeURIComponent(movie.Title2)}`;
       });
+
+      movieList.appendChild(movieDiv);
+    });
+  }
+
+  // Update the state of the pagination buttons
+  function updatePaginationButtons(totalPages) {
+    const prevButton = document.getElementById('prev-button');
+    const nextButton = document.getElementById('next-button');
+
+    prevButton.disabled = currentPage <= 1;
+    nextButton.disabled = currentPage >= totalPages;
+  }
+
+  // Event listener for the Previous button
+  document.getElementById('prev-button').addEventListener('click', () => {
+    if (currentPage > 1) {
+      currentPage--;
+      fetchMoviesByCategory(category, currentPage);
     }
+  });
 
-    // Display the category name
-    displayCategoryName(category);
+  // Event listener for the Next button
+  document.getElementById('next-button').addEventListener('click', () => {
+    currentPage++;
+    fetchMoviesByCategory(category, currentPage);
+  });
 
-    // Fetch and display movies based on the category
-    fetchMoviesByCategory(category);
-  </script>
+  // Display the category name
+  displayCategoryName(category);
+
+  // Initial fetch of movies
+  fetchMoviesByCategory(category, currentPage);
+</script>
+
 
   <script src="https://cdn.jsdelivr.net/npm/eruda"></script>
   <script>eruda.init();</script>
+  
 </body>
 </html>
