@@ -7,6 +7,7 @@
 </head>
 <body>
   <h1>Movies</h1>
+  <h2 id="category-name"></h2> <!-- Placeholder for category name -->
   <div id="movie-list"></div> <!-- Here the movie details will be displayed -->
 
   <!-- the api config file (must on all js top) -->
@@ -16,6 +17,13 @@
     // Retrieve category from the URL query parameters
     const urlParams = new URLSearchParams(window.location.search);
     const category = urlParams.get('category');
+
+    // Display the category name on the page
+    function displayCategoryName(category) {
+      const categoryNameElement = document.getElementById('category-name');
+      const formattedCategory = category.replace(/-/g, ' ').toUpperCase(); // Format the category name
+      categoryNameElement.textContent = `Category: ${formattedCategory}`;
+    }
 
     // Fetch and display movies for the category
     async function fetchMoviesByCategory(category) {
@@ -68,13 +76,14 @@
       });
     }
 
+    // Display the category name
+    displayCategoryName(category);
+
     // Fetch and display movies based on the category
     fetchMoviesByCategory(category);
   </script>
 
-
   <script src="https://cdn.jsdelivr.net/npm/eruda"></script>
-<script>eruda.init();</script>
-
+  <script>eruda.init();</script>
 </body>
 </html>
