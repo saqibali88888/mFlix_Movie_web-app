@@ -11,7 +11,6 @@
       font-family: 'Roboto', Arial, sans-serif;
       margin: 0;
       padding: 0;
-      
       color: #ffffff;
     }
 
@@ -31,6 +30,34 @@
       padding: 20px;
       max-width: 1200px;
       margin: 0 auto;
+    }
+
+    /* Skeleton Loader Styling */
+    .skeleton-loader {
+      background: #2a2a2a;
+      border-radius: 12px;
+      box-shadow: 0 5px 5px rgba(0, 0, 0, 0.2);
+      width: 100%;
+      height: 250px;
+      animation: loading 1.5s infinite linear;
+    }
+
+    .skeleton-loader::before {
+      content: "";
+      display: block;
+      width: 100%;
+      height: 150px;
+      background: linear-gradient(90deg, #444444 25%, #666666 50%, #444444 75%);
+      animation: shimmer 1.5s infinite;
+    }
+
+    @keyframes shimmer {
+      0% {
+        background-position: -200px 0;
+      }
+      100% {
+        background-position: 200px 0;
+      }
     }
 
     /* Movie Item Styling */
@@ -71,7 +98,7 @@
       font-size: 10px;
       color: #b3b3b3;
       margin: 5px 0;
-    } 
+    }
 
     /* Pagination Buttons */
     .pagination {
@@ -99,13 +126,21 @@
       background-color: #555555;
       cursor: not-allowed;
     }
-    
+
   </style>
 </head>
 <body>
   
   <h1 id="category-name"></h1> <!-- Placeholder for category name -->
-  <div id="movie-list"></div> <!-- Here the movie details will be displayed -->
+  <div id="movie-list">
+    <!-- Skeleton Loading Cards will be inserted here -->
+    <div class="skeleton-loader"></div>
+    <div class="skeleton-loader"></div>
+    <div class="skeleton-loader"></div>
+    <div class="skeleton-loader"></div>
+    <div class="skeleton-loader"></div>
+    <div class="skeleton-loader"></div>
+  </div> <!-- Here the movie details will be displayed -->
 
   <div class="pagination">
     <button id="prev-button" disabled>Previous</button>
@@ -115,7 +150,6 @@
   <!-- the api config file (must on all js top) -->
   <script src="src/api/config.js"></script>
 
-  
 <script>
   // Retrieve category from the URL query parameters
   const urlParams = new URLSearchParams(window.location.search);
@@ -160,7 +194,7 @@
   // Display the movie list on the page
   function displayMovieList(movies) {
     const movieList = document.getElementById('movie-list');
-    movieList.innerHTML = ''; // Clear existing content
+    movieList.innerHTML = ''; // Clear existing skeleton loaders
 
     movies.forEach(movie => {
       const movieDiv = document.createElement('div');
@@ -230,9 +264,14 @@
   }
 </script>
 
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.1/gsap.min.js"></script>
+
+
 
   <script src="https://cdn.jsdelivr.net/npm/eruda"></script>
   <script>eruda.init();</script>
-  
+
 </body>
 </html>
