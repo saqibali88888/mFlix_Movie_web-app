@@ -100,7 +100,7 @@ function toggleSearchInput() {
 
 // Fetch movies based on search query
 async function searchMovies(query) {
-  const apiUrl = `https://mymoviesclan-api.vercel.app/api/search?query=${query}`;
+  const apiUrl = `https://mymoviesclan-demo-api.vercel.app/api/search?query=${query}`;
   const response = await fetch(apiUrl);
   const data = await response.json();
   return data.results;
