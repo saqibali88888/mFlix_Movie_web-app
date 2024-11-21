@@ -13,13 +13,25 @@
 
 
   <style>
-    /* General Body Styling */
-    body {
-      font-family: 'Roboto', Arial, sans-serif;
-      margin: 0;
-      padding: 0;
-      color: #ffffff;
-    } 
+/* General Body Styles */
+  body {
+    font-family: 'Roboto', sans-serif;
+    margin: 0;
+    padding: 0;
+    transition: background-color 0.3s, color 0.3s;
+  }
+
+  /* Dark Mode Styling */
+  body.dark-mode {
+    background-color: #121212;
+    color: #ffffff;
+  }
+
+  /* Light Mode Styling */
+  body.light-mode {
+    background-color: #ffffff;
+    color: #121212;
+  }
 
     /* Header Styling */
   header {
@@ -397,6 +409,10 @@
       }
     }
   </script> 
+
+
+  <script src="https://cdn.jsdelivr.net/npm/eruda"></script>
+  <script>eruda.init();</script>
 
   
 
