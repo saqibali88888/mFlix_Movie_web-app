@@ -8,25 +8,32 @@
   <style>
     /* General Body Styling */
     body {
-      font-family: 'Roboto', Arial, sans-serif;
+      font-family: 'Arial', sans-serif;
       margin: 0;
       padding: 0;
+      background: #121212; /* Dark background for the page */
       color: #ffffff;
+      overflow-x: hidden;
+      line-height: 1.6;
     }
 
     /* Header Styling */
     h1 {
       text-align: center;
-      margin: 20px 0;
-      color: #ff5722; /* Accent Color */
+      margin: 30px 0;
+      color: #ff5722; /* Accent color */
       font-weight: 700;
+      font-size: 36px;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
     }
 
     /* Movie List Grid */
     #movie-list {
       display: grid;
-      grid-template-columns: repeat(3, 1fr); /* Exactly 3 columns */
-      gap: 10px;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 15px;
       padding: 20px;
       max-width: 1200px;
       margin: 0 auto;
@@ -34,21 +41,10 @@
 
     /* Skeleton Loader Styling */
     .skeleton-loader {
-      background: #2a2a2a;
-      border-radius: 12px;
-      box-shadow: 0 5px 5px rgba(0, 0, 0, 0.2);
-      width: 100%;
-      height: 250px;
-      animation: loading 1.5s infinite linear;
-    }
-
-    .skeleton-loader::before {
-      content: "";
-      display: block;
-      width: 100%;
-      height: 150px;
       background: linear-gradient(90deg, #444444 25%, #666666 50%, #444444 75%);
-      animation: shimmer 1.5s infinite;
+      border-radius: 12px;
+      height: 300px;
+      animation: shimmer 1.5s infinite linear;
     }
 
     @keyframes shimmer {
@@ -62,64 +58,72 @@
 
     /* Movie Item Styling */
     .movie-item {
-      background: linear-gradient(145deg, #1e1e1e, #2a2a2a); /* Gradient background */
-      border-radius: 12px;
+      background: #2c2c2c; /* Dark gray background */
+      border-radius: 15px;
       overflow: hidden;
-      box-shadow: 0 5px 5px rgba(0, 0, 0, 0.2);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
       transition: transform 0.3s ease, box-shadow 0.3s ease;
       cursor: pointer;
+      overflow: hidden;
     }
 
     .movie-item:hover {
       transform: scale(1.05);
-      box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
     }
 
-    /* Movie Thumbnail */
     .movie-item img {
       width: 100%;
-      height: 150px;
-      object-fit: fill;
-      border-bottom: 2px solid #ff5722;
+      height: 180px;
+      object-fit: cover;
+      transition: transform 0.3s ease;
+    }
+
+    .movie-item:hover img {
+      transform: scale(1.1);
     }
 
     /* Movie Info Section */
     .movie-item div {
-      padding: 10px;
+      padding: 15px;
+      background: #333333;
+      text-align: center;
+      border-top: 3px solid #ff5722; /* Accent color for the top border */
     }
 
     .movie-item h3 {
-      font-size: 12px;
-      margin: 5px 0 5px;
-      color: #ffffff;
+      font-size: 16px;
+      margin: 5px 0;
+      font-weight: bold;
+      color: #fff;
     }
 
     .movie-item p {
-      font-size: 10px;
+      font-size: 14px;
       color: #b3b3b3;
-      margin: 5px 0;
     }
 
     /* Pagination Buttons */
     .pagination {
       text-align: center;
-      margin: 20px 0;
+      margin: 30px 0;
     }
 
     .pagination button {
       background-color: #ff5722;
       color: #ffffff;
       border: none;
-      padding: 10px 20px;
-      font-size: 16px;
-      margin: 0 5px;
+      padding: 12px 25px;
+      font-size: 18px;
+      margin: 0 10px;
       cursor: pointer;
-      border-radius: 5px;
-      transition: background-color 0.3s ease;
+      border-radius: 25px;
+      transition: background-color 0.3s ease, transform 0.3s ease;
     }
 
     .pagination button:hover {
       background-color: #e64a19;
+      transform: scale(1.05);
     }
 
     .pagination button:disabled {
@@ -127,11 +131,35 @@
       cursor: not-allowed;
     }
 
+    /* Smooth Scroll Effect */
+    html {
+      scroll-behavior: smooth;
+    }
+
+    /* Footer Section */
+    footer {
+      background-color: #1a1a1a;
+      padding: 20px;
+      text-align: center;
+      color: #bbb;
+      font-size: 14px;
+    }
+
+    footer a {
+      color: #ff5722;
+      text-decoration: none;
+    }
+
+    footer a:hover {
+      text-decoration: underline;
+    }
   </style>
 </head>
 <body>
   
-  <h1 id="category-name">Hello World!</h1> <!-- Placeholder for category name -->
+  <h1 id="category-name"></h1> <!-- Placeholder for category name -->
+  
+  <!-- Movie List Container -->
   <div id="movie-list">
     <!-- Skeleton Loading Cards will be inserted here -->
     <div class="skeleton-loader"></div>
@@ -142,10 +170,16 @@
     <div class="skeleton-loader"></div>
   </div> <!-- Here the movie details will be displayed -->
 
+  <!-- Pagination Buttons -->
   <div class="pagination">
     <button id="prev-button" disabled>Previous</button>
     <button id="next-button">Next</button>
   </div>
+
+  <!-- Footer Section -->
+  <footer>
+    <p>&copy; 2024 <a href="#">Movie Site</a>. All Rights Reserved.</p>
+  </footer>
 
   <!-- the api config file (must on all js top) -->
   <script src="src/api/config.js"></script>
@@ -255,18 +289,10 @@
     fetchMoviesByCategory(category, currentPage);
   });
 
-  // Initialize the page
-  if (!category) {
-    displayErrorMessage('Category is missing from the URL. Please provide a valid category.');
-  } else {
-    displayCategoryName(category);
-    fetchMoviesByCategory(category, currentPage);
-  }
+  // Initial function call
+  displayCategoryName(category);
+  fetchMoviesByCategory(category, currentPage);
 </script>
-
-  
-  <script src="https://cdn.jsdelivr.net/npm/eruda"></script>
-  <script>eruda.init();</script>
 
 </body>
 </html>
