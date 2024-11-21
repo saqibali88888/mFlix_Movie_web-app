@@ -4,6 +4,76 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>View All Movies</title>
+
+  <style>
+    /* General Body Styling */
+    body {
+      font-family: 'Roboto', Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      
+      color: #ffffff;
+    }
+
+    /* Header Styling */
+    h1 {
+      text-align: center;
+      margin: 20px 0;
+      color: #ff5722; /* Accent Color */
+      font-weight: 700;
+    }
+
+    /* Movie List Grid */
+    #movie-list {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr); /* Exactly 3 columns */
+      gap: 10px;
+      padding: 20px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    /* Movie Item Styling */
+    .movie-item {
+      background: linear-gradient(145deg, #1e1e1e, #2a2a2a); /* Gradient background */
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 5px 5px rgba(0, 0, 0, 0.2);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      cursor: pointer;
+    }
+
+    .movie-item:hover {
+      transform: scale(1.05);
+      box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
+    }
+
+    /* Movie Thumbnail */
+    .movie-item img {
+      width: 100%;
+      height: 150px;
+      object-fit: cover;
+      border-bottom: 2px solid #ff5722;
+    }
+
+    /* Movie Info Section */
+    .movie-item div {
+      padding: 10px;
+    }
+
+    .movie-item h3 {
+      font-size: 12px;
+      margin: 5px 0 5px;
+      color: #ffffff;
+    }
+
+    .movie-item p {
+      font-size: 10px;
+      color: #b3b3b3;
+      margin: 5px 0;
+    } 
+    
+  </style>
 </head>
 <body>
   
@@ -46,8 +116,8 @@
         movieDiv.innerHTML = `
           <img src="${movie.sources[0].thumbnail}" alt="${movie.Title2}">
           <div>
-            <h3>${movie.Title2} (${movie.year})</h3>
-            <p>Quality: ${movie.sources[0].quality}</p>
+            <h3>${movie.Title2}</h3>
+            <p>(${movie.year})</p>
           </div>
         `;
 
