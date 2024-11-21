@@ -72,6 +72,33 @@
       color: #b3b3b3;
       margin: 5px 0;
     } 
+
+    /* Pagination Buttons */
+    .pagination {
+      text-align: center;
+      margin: 20px 0;
+    }
+
+    .pagination button {
+      background-color: #ff5722;
+      color: #ffffff;
+      border: none;
+      padding: 10px 20px;
+      font-size: 16px;
+      margin: 0 5px;
+      cursor: pointer;
+      border-radius: 5px;
+      transition: background-color 0.3s ease;
+    }
+
+    .pagination button:hover {
+      background-color: #e64a19;
+    }
+
+    .pagination button:disabled {
+      background-color: #555555;
+      cursor: not-allowed;
+    }
     
   </style>
 </head>
@@ -79,6 +106,11 @@
   
   <h1 id="category-name"></h1> <!-- Placeholder for category name -->
   <div id="movie-list"></div> <!-- Here the movie details will be displayed -->
+
+  <div class="pagination">
+    <button id="prev-button" disabled>Previous</button>
+    <button id="next-button">Next</button>
+  </div>
 
   <!-- the api config file (must on all js top) -->
   <script src="src/api/config.js"></script>
