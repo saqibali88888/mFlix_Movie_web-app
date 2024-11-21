@@ -115,13 +115,21 @@
   <!-- the api config file (must on all js top) -->
   <script src="src/api/config.js"></script>
 
-  <script>
+  
+<script>
   // Retrieve category from the URL query parameters
   const urlParams = new URLSearchParams(window.location.search);
   const category = urlParams.get('category');
 
   // Track the current page
   let currentPage = 1;
+
+  // Display error message
+  function displayErrorMessage(message) {
+    const movieList = document.getElementById('movie-list');
+    movieList.innerHTML = `<p style="text-align: center; color: red;">${message}</p>`;
+    document.querySelector('.pagination').style.display = 'none'; // Hide pagination if there's an error
+  }
 
   // Display the category name on the page
   function displayCategoryName(category) {
@@ -137,10 +145,15 @@
       const response = await fetch(apiUrl);
       const data = await response.json();
 
-      displayMovieList(data.results);
-      updatePaginationButtons(data.totalPages); // Update pagination buttons
+      if (data.results && data.results.length > 0) {
+        displayMovieList(data.results);
+        updatePaginationButtons(data.totalPages); // Update pagination buttons
+      } else {
+        displayErrorMessage('No movies found for the selected category.');
+      }
     } catch (error) {
       console.error('Error fetching movies:', error);
+      displayErrorMessage('Failed to load movies. Please try again later.');
     }
   }
 
@@ -153,32 +166,32 @@
       const movieDiv = document.createElement('div');
       movieDiv.classList.add('movie-item');
       movieDiv.innerHTML = `
-        <img src="${movie.sources[0].thumbnail}" alt="${movie.Title2}">
+        <img src="${movie.sources[0]?.thumbnail || 'default-thumbnail.jpg'}" alt="${movie.Title2 || 'Unknown Title'}">
         <div>
-          <h3>${movie.Title2}</h3>
-          <p>(${movie.year})</p>
+          <h3>${movie.Title2 || 'Unknown Title'}</h3>
+          <p>(${movie.year || 'Unknown Year'})</p>
         </div>
       `;
 
       // Add click event to redirect and pass data
       movieDiv.addEventListener('click', () => {
         const movieData = {
-          title: movie.Title2,
-          year: movie.year,
-          thumbnail: movie.sources[0].thumbnail,
+          title: movie.Title2 || 'Unknown Title',
+          year: movie.year || 'Unknown Year',
+          thumbnail: movie.sources[0]?.thumbnail || 'default-thumbnail.jpg',
           qualities: movie.sources.map(source => ({
             quality: source.quality,
             streamUrl: source.streamUrl,
             fileSize: source.fileSize
           })),
-          downloadLink: movie.sources[0].streamUrl // Assuming the first source is for download
+          downloadLink: movie.sources[0]?.streamUrl || '#'
         };
 
         // Save data to localStorage
         localStorage.setItem('movieData', JSON.stringify(movieData));
 
         // Redirect to watch.html
-        window.location.href = `/watch.html?title=${encodeURIComponent(movie.Title2)}`;
+        window.location.href = `/watch.html?title=${encodeURIComponent(movie.Title2 || 'Unknown Title')}`;
       });
 
       movieList.appendChild(movieDiv);
@@ -208,11 +221,13 @@
     fetchMoviesByCategory(category, currentPage);
   });
 
-  // Display the category name
-  displayCategoryName(category);
-
-  // Initial fetch of movies
-  fetchMoviesByCategory(category, currentPage);
+  // Initialize the page
+  if (!category) {
+    displayErrorMessage('Category is missing from the URL. Please provide a valid category.');
+  } else {
+    displayCategoryName(category);
+    fetchMoviesByCategory(category, currentPage);
+  }
 </script>
 
 
