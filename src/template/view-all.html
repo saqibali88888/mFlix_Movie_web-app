@@ -51,10 +51,10 @@
             thumbnail: movie.sources[0].thumbnail,
             qualities: movie.sources.map(source => ({
               quality: source.quality,
-              streamUrl: source.stream_url,
-              fileSize: source.file_size
+              streamUrl: source.streamUrl,
+              fileSize: source.fileSize
             })),
-            downloadLink: movie.sources[0].stream_url // Assuming the first source is for download
+            downloadLink: movie.sources[0].streamUrl // Assuming the first source is for download
           };
 
           // Save data to localStorage
