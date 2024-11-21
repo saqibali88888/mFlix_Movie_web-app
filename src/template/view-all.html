@@ -5,6 +5,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>View All Movies</title>
 
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="/assets/favicon/logo.webp">
+
+
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet"> <!-- Add Font Awesome -->
+
+
   <style>
     /* General Body Styling */
     body {
@@ -12,7 +19,53 @@
       margin: 0;
       padding: 0;
       color: #ffffff;
-    }
+    } 
+
+    /* Header Styling */
+  header {
+    background-color: #222;
+    padding: 10px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: #ffffff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+
+  header a {
+    font-size: 20px;
+    margin: 0;
+    font-weight: bold;
+    color: white;
+    text-decoration: none; 
+  } 
+  
+  .headerIcon {
+    display: flex;
+    gap: 10px; /* Adjust gap size as needed */
+    align-items: center;
+  }
+
+  /* Toggle and Search Button */
+  .mode-toggle, .searchbtn {
+    background-color: #444;
+    border: none;
+    border-radius: 50%;
+    width: 38px;
+    height: 38px;
+    color: #ffffff;
+    font-size: 20px;
+    cursor: pointer;
+    transition: transform 0.2s ease-in-out, background-color 0.3s;
+  }
+
+  .mode-toggle:hover, .searchbtn:hover {
+    transform: scale(1.1);
+    background-color: #555;
+  }
 
     /* Header Styling */
     h1 {
@@ -129,7 +182,25 @@
 
   </style>
 </head>
-<body>
+  
+<body class="light-mode"> 
+
+  <!-- Header -->
+<header>
+  <a href="/" target="_blank">mFlix web-app</a>
+  <div class="headerIcon">
+  <!-- Search Button -->
+  <button class="searchbtn" onclick="window.location.href='src/template/search.html';">
+    <i class="fas fa-search"></i>
+  </button>
+  
+  <!-- Mode Toggle Button -->
+  <button class="mode-toggle" onclick="toggleMode()">
+    <i class="fas fa-sun"></i>
+  </button>
+  </div>
+</header>
+  
   
   <h1 id="category-name"></h1> <!-- Placeholder for category name -->
   <div id="movie-list">
@@ -308,7 +379,26 @@
     displayCategoryName(category);
     fetchMoviesByCategory(category, currentPage);
   }
-</script>
+</script> 
+
+
+  <script>
+    // Toggle Dark/Light Mode
+    function toggleMode() {
+      const body = document.body;
+      const modeButton = document.querySelector('.mode-toggle i');
+
+      if (body.classList.contains('dark-mode')) {
+        body.classList.replace('dark-mode', 'light-mode');
+        modeButton.classList.replace('fa-moon', 'fa-sun'); // Sun icon for light mode
+      } else {
+        body.classList.replace('light-mode', 'dark-mode');
+        modeButton.classList.replace('fa-sun', 'fa-moon'); // Moon icon for dark mode
+      }
+    }
+  </script> 
+
+  
 
 </body>
 </html>
