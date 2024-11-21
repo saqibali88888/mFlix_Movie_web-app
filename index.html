@@ -396,13 +396,13 @@
 <!-- K-Drama Content -->
 <div class="section">
   <div class="section-title">K-Drama
-	  <a href="src/template/view-all.html?category=kdrama" class="view-all">View All</a>
+	  <a href="src/template/view-all.html?category=k-drama" class="view-all">View All</a>
   </div>
   
   <div class="scrollBtn-wrapper">
-    <button class="scroll-nav left" id="prev-btn-kdrama" onclick="scrollCarousel('kdrama', -1)"><i class="fa fa-angle-left"></i></button>
+    <button class="scroll-nav left" id="prev-btn-k-drama" onclick="scrollCarousel('k-drama', -1)"><i class="fa fa-angle-left"></i></button>
   
-    <div class="carousel-container" id="movies-carousel-kdrama">
+    <div class="carousel-container" id="movies-carousel-k-drama">
       <!-- Carousel Items -->
       <div class="scroll-item">
         <div class="image-container loading">
@@ -429,7 +429,7 @@
       </div>
     </div>
     
-    <button class="scroll-nav right" id="next-btn-kdrama" onclick="scrollCarousel('kdrama', 1)"><i class="fa fa-angle-right"></i></button>
+    <button class="scroll-nav right" id="next-btn-k-drama" onclick="scrollCarousel('k-drama', 1)"><i class="fa fa-angle-right"></i></button>
   </div>
 </div>  
 
@@ -760,8 +760,8 @@
       .catch(console.error);
       
       // Fetch and display Kdrama
-    fetchMovies(`${BASE_API_URL}/kdrama`)
-      .then(movies => displayMovies(movies, 'movies-carousel-kdrama'))
+    fetchMovies(`${BASE_API_URL}/k-drama`)
+      .then(movies => displayMovies(movies, 'movies-carousel-k-drama'))
       .catch(console.error);
       
       // Fetch and display bollywood-movie
