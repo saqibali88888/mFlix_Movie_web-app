@@ -24,9 +24,11 @@
 ## To Do 📚
 - [ ] Implement Cache in Index and View all Page.
 - [ ] Improve UI Css.
-- [X] Implement Dark mode
-- [ ] Fix Download button
-- [ ] Fix Search Functionality
+- [ ] Add Design Fir Desktop mode.
+- [ ] Implement Progressive Web App (PWA).
+- [X] Implement Dark mode.
+- [ ] Fix Download button.
+- [ ] Fix Search Functionality.
 - [ ] and add more...
 
 
