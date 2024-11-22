@@ -9,7 +9,7 @@
 [![Netlify Status](https://api.netlify.com/api/v1/badges/af59c434-be65-4a3a-b8ae-7500cb458db7/deploy-status)](https://app.netlify.com/sites/mymoviesclan/deploys)
 
 
-## See Live Demo👀
+## See Live Demo 👀
 
 👉 <b>[Click Here To See](https://mymoviesclan.netlify.app/)<b>
 
@@ -19,6 +19,15 @@
 
 > [!CAUTION]
 > This web-app is under ⚠️ Construction. but you can contribute in this project Just fork this repo and make changes and then push The Update.
+
+
+## To Do 📚
+- [ ] Implement Cache in Index and View all Page.
+- [ ] Improve UI Css.
+- [X] Implement Dark mode
+- [ ] Fix Download button
+- [ ] Fix Search Functionality
+- [ ] and add more...
 
 
 ## Help & Support ❤
