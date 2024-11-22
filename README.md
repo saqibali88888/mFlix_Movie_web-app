@@ -11,20 +11,28 @@
 
 ## See Live Demo 👀
 
-👉 <b>[Click Here To See](https://mymoviesclan.netlify.app/)<b>
+> :-👉 <b>[Click Here To See](https://mymoviesclan.netlify.app/)<b>
 
 
-> [!IMPORTANT]
+## Highlights
+
+> [!WARNING]
 > Don't Forget to give Us Credit.
 
 > [!CAUTION]
-> This web-app is under ⚠️ Construction. but you can contribute in this project Just fork this repo and make changes and then push The Update.
+> This web-app is under ⚠️ Construction.
+
+> [!IMPORTANT]
+> You can contribute in this project Just fork this repo and make changes and then push The Update.
+
+>  [!NOTE]
+> For Regular Updates about New Changes Be in touch with us via our Telegram Channel.
 
 
 ## To Do 📚
 - [ ] Implement Cache in Index and View all Page.
 - [ ] Improve UI Css.
-- [ ] Add Design Fir Desktop mode.
+- [ ] Add Design For Desktop mode.
 - [ ] Implement Progressive Web App (PWA).
 - [X] Implement Dark mode.
 - [ ] Fix Download button.
