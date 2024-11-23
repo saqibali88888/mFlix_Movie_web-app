@@ -40,8 +40,30 @@
 - [ ] and add more...
 
 
+## API
+> The **API** is hosted with ❤️ by Us on hosting platforms. 
+
+## Donate
+
+This project is completely free to use and it's solely maintained by me, from the web-app to the API. To keep the API free forever, please consider donating. That would be **greatly appreciated**.
+
+
+<!-- CONTRIBUTING -->
+## Contributing
+
+for any bug or feature requests, [Submit an issue here](https://github.com/ScripterSaurav/mFlix_web-app/issues).
+
+Also please see the [open issues](https://github.com/ScripterSaurav/mFlix_web-app/issues) for a list of proposed features before submitting a new one.
+
+
 ## Help & Support ❤
 
 You can contact the us via email, or join the telegram group (Recommended).
 
 <b>Join Telegram Group:- https://t.me/webcoderhub</b>
+
+
+<!-- LICENSE -->
+## Copyright
+
+Copyright © [ScripterSaurav](https://github.com/ScripterSaurav/mFlix_web-app) 2024-25.
