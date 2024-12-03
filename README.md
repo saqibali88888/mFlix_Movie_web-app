@@ -14,7 +14,7 @@
 > :-👉 <b>[Click Here To See](https://mymoviesclan.netlify.app/)<b>
 
 
-## Highlights
+## Highlights 👨‍🏫
 
 > [!WARNING]
 > Don't Forget to give Us Credit.
@@ -40,16 +40,28 @@
 - [ ] and add more...
 
 
-## API
+## API ⚡
 > The **API** is hosted with ❤️ by Us on hosting platforms. 
 
-## Donate
+## Donate 💝
 
 This project is completely free to use and it's solely maintained by me, from the web-app to the API. To keep the API free forever, please consider donating. That would be **greatly appreciated**.
 
 
+## FAQ 🤔
+
+#### Question 1: How do i Upload movies myself?
+
+**Answer:** If you want to Upload movies yourself then join the @moviesflixoo Telegram group and ask for permission.
+
+#### Question 2: Can i add more categories in api?
+
+**Answer:** Yes, you can do (with permission).
+
+
+
 <!-- CONTRIBUTING -->
-## Contributing
+## Contributing 🤝
 
 for any bug or feature requests, [Submit an issue here](https://github.com/ScripterSaurav/mFlix_web-app/issues).
 
@@ -64,6 +76,6 @@ You can contact the us via email, or join the telegram group (Recommended).
 
 
 <!-- LICENSE -->
-## Copyright
+## Copyright ©️
 
 Copyright © [ScripterSaurav](https://github.com/ScripterSaurav/mFlix_web-app) 2024-25.
