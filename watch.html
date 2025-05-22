@@ -1,473 +1,411 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" itemscope itemtype="https://schema.org/Movie">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Watch Movie</title>
-
-<link rel="stylesheet" href="https://cdn.plyr.io/3.6.12/plyr.css" />
-<!-- Plyr Script -->
-  <script src="https://cdn.plyr.io/3.6.12/plyr.polyfilled.js"></script>
-  
-<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet"> <!-- Add Font Awesome -->
-	
-<style>
-/* General Body Styles */
-  body {
-    font-family: 'Roboto', sans-serif;
-    margin: 0;
-    padding: 0;
-    transition: background-color 0.3s, color 0.3s;
-  }
-
-  /* Dark Mode Styling */
-  body.dark-mode {
-    background-color: #121212;
-    color: #bbb;
-  }
-
-  /* Light Mode Styling */
-  body.light-mode {
-    background-color: #ffffff;
-    color: #121212;
-  }
-
-  /* Header Styling */
-  header {
-    background-color: #222;
-    padding: 10px 20px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    color: #ffffff;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-    position: sticky;
-    top: 0;
-    z-index: 100;
-  }
-
-  header a {
-    font-size: 20px;
-    margin: 0;
-    font-weight: bold;
-    color: white;
-    text-decoration: none; 
-  } 
-  
-  .headerIcon {
-    display: flex;
-    gap: 10px; /* Adjust gap size as needed */
-    align-items: center;
-  }
-
-  /* Toggle and Search Button */
-  .mode-toggle, .searchbtn {
-    background-color: #444;
-    border: none;
-    border-radius: 50%;
-    width: 38px;
-    height: 38px;
-    color: #ffffff;
-    font-size: 20px;
-    cursor: pointer;
-    transition: transform 0.2s ease-in-out, background-color 0.3s;
-  }
-
-  .mode-toggle:hover, .searchbtn:hover {
-    transform: scale(1.1);
-    background-color: #555;
-  }
-
-  /* Movie thumbnail (not shown as we use poster image for video player) */
-  .download-btn {
-    display: none;  /* Hide the thumbnail */
-  }
-
-  /* Video player style */
-  #player {
-    width: 100%; /* Fixed width */
-    height: 220px; /* Fixed height */
-    object-fit: cover; /* Ensures video or poster fits the defined area */
-    border-radius: 5px; /* Optional: Adds rounded corners */
-    background-color: black; /* Fallback for poster image loading */
-  }
-
-  /* Optional: Ensure the parent container respects the fixed dimensions */
-  .video-player {
-    width: 100%;
-    max-width: 800px;
-    height: 220px;
-    margin: 20px auto;
-    border-radius: 5px; /* Optional: Adds rounded corners */
-    overflow: hidden; /* Prevent overflow issues */
-  }
-
-  /* Quality option buttons */
-  .quality-options {
-    display: flex;
-    justify-content: center;
-    gap: 10px;
-    margin: 15px 0;
-  }
-
-  .quality-options button {
-    padding: 5px 10px;
-    border-radius: 5px;
-    background-color: #ff5722;
-    color: #fff;
-    border: none;
-    cursor: pointer;
-    font-size: 15px;
-    transition: background-color 0.3s;
-  }
-
-  .quality-options button:hover {
-    background-color: #e64a19;
-  }
-
-  /* Container for the download buttons */
-#downloadOptions {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    margin-top: 20px;
-}
-
-/* Download buttons style */
-#downloadOptions button {
-    background-color: #4caf50; /* Green background */
-    color: white; /* White text */
-    border: none;
-    padding: 10px 20px;
-    font-size: 14px;
-    font-weight: bold;
-    border-radius: 5px; /* Rounded corners */
-    cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.2s ease;
-    text-align: center;
-    white-space: nowrap;
-}
-
-/* Hover effect for buttons */
-#downloadOptions button:hover {
-    background-color: #45a049; /* Darker green */
-    transform: scale(1.05); /* Slightly enlarge on hover */
-}
-
-/* Active effect when the button is clicked */
-#downloadOptions button:active {
-    background-color: #3e8e41; /* Even darker green */
-    transform: scale(0.98); /* Slightly shrink */
-}
-
-/* Style for different screen sizes */
-@media screen and (max-width: 600px) {
-    #downloadOptions {
-        flex-direction: column; /* Stack buttons vertically on small screens */
-        align-items: flex-start;
-    }
-    #downloadOptions button {
-        width: 100%; /* Full-width buttons */
-    }
-}
-
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Watch [MOVIE_TITLE] ([MOVIE_YEAR]) in high quality with multiple resolution options">
+    <meta name="robots" content="index, follow">
+    <meta name="theme-color" content="#121212">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="video.movie">
+    <meta property="og:title" content="Watch [MOVIE_TITLE] ([MOVIE_YEAR]) Online">
+    <meta property="og:description" content="Stream [MOVIE_TITLE] in HD quality with multiple resolution options">
+    <meta property="og:image" content="[THUMBNAIL_URL]">
+    <meta property="og:url" content="[CURRENT_PAGE_URL]">
+    <meta property="og:site_name" content="YourMovieSiteName">
+    
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Watch [MOVIE_TITLE] ([MOVIE_YEAR]) Online">
+    <meta name="twitter:description" content="Stream [MOVIE_TITLE] in HD quality with multiple resolution options">
+    <meta name="twitter:image" content="[THUMBNAIL_URL]">
+    
+    <!-- Schema.org markup -->
+    <meta itemprop="name" content="[MOVIE_TITLE]">
+    <meta itemprop="description" content="Watch [MOVIE_TITLE] online in high quality">
+    <meta itemprop="image" content="[THUMBNAIL_URL]">
+    <meta itemprop="dateCreated" content="[MOVIE_YEAR]">
+    
+    <title>Watch [MOVIE_TITLE] ([MOVIE_YEAR]) Online | YourMovieSiteName</title>
+    
+    <!-- Canonical URL -->
+    <link rel="canonical" href="[CURRENT_PAGE_URL]" />
+    
+    <!-- Favicon -->
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+    
+    <!-- Preload important resources -->
+    <link rel="preload" href="https://cdn.plyr.io/3.6.12/plyr.css" as="style">
+    <link rel="preload" href="https://cdn.plyr.io/3.6.12/plyr.polyfilled.js" as="script">
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="https://cdn.plyr.io/3.6.12/plyr.css" />
+    <style>
+        :root {
+            --plyr-color-main: #ff5722;
+            --plyr-video-control-color: #fff;
+            --plyr-video-control-color-hover: #fff;
+            --plyr-video-control-background-hover: rgba(255, 87, 34, 0.8);
+        }
+        
+        body {
+            font-family: 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            line-height: 1.6;
+            color: #e0e0e0;
+            background-color: #121212;
+            margin: 0;
+            padding: 0;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+        
+        .movie-details {
+            max-width: 800px;
+            margin: 20px auto;
+            text-align: center;
+        }
+        
+        .movie-thumbnail {
+            max-width: 100%;
+            height: auto;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s ease;
+        }
+        
+        .movie-thumbnail:hover {
+            transform: scale(1.02);
+        }
+        
+        .movie-title {
+            font-size: 2rem;
+            font-weight: bold;
+            margin: 15px 0 5px;
+            color: #ffffff;
+        }
+        
+        .movie-meta {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .movie-year, .movie-rating, .movie-duration {
+            font-size: 1rem;
+            color: #bbb;
+        }
+        
+        .video-container {
+            width: 100%;
+            max-width: 800px;
+            margin: 20px auto;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+        }
+        
+        .quality-options {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin: 20px 0;
+            flex-wrap: wrap;
+        }
+        
+        .quality-btn {
+            padding: 10px 20px;
+            border-radius: 5px;
+            background-color: #333;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            font-weight: 500;
+        }
+        
+        .quality-btn:hover, .quality-btn.active {
+            background-color: #ff5722;
+        }
+        
+        .download-btn {
+            text-decoration: none;
+            color: #fff;
+            padding: 12px 25px;
+            background-color: #ff5722;
+            border-radius: 5px;
+            display: inline-block;
+            transition: all 0.3s;
+            font-weight: 500;
+            margin: 15px 0;
+            border: none;
+            cursor: pointer;
+        }
+        
+        .download-btn:hover {
+            background-color: #e64a19;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(230, 74, 25, 0.3);
+        }
+        
+        .breadcrumb {
+            padding: 15px 0;
+            font-size: 0.9rem;
+            color: #bbb;
+        }
+        
+        .breadcrumb a {
+            color: #ff5722;
+            text-decoration: none;
+        }
+        
+        @media (max-width: 768px) {
+            .movie-title {
+                font-size: 1.5rem;
+            }
+            
+            .quality-btn, .download-btn {
+                padding: 8px 15px;
+                font-size: 0.9rem;
+            }
+        }
+        
+        /* Accessibility improvements */
+        button:focus, a:focus {
+            outline: 2px solid #ff5722;
+            outline-offset: 2px;
+        }
+        
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border-width: 0;
+        }
+    </style>
 </head>
+<body>
+    <!-- Header -->
+    <header id="header-placeholder" role="banner"></header>
 
-  <body class="light-mode">
+    <main class="container" role="main">
+        <!-- Breadcrumb navigation -->
+        <nav class="breadcrumb" aria-label="Breadcrumb">
+            <a href="/">Home</a> &gt; 
+            <a href="/movies">Movies</a> &gt; 
+            <span>[MOVIE_TITLE]</span>
+        </nav>
+        
+        <article class="movie-details">
+            <img id="thumbnail" src="" alt="[MOVIE_TITLE] movie poster" class="movie-thumbnail" itemprop="image">
+            <h1 class="movie-title" id="movieTitle" itemprop="name">[MOVIE_TITLE]</h1>
+            
+            <div class="movie-meta">
+                <span class="movie-year" id="movieYear" itemprop="dateCreated">[MOVIE_YEAR]</span>
+                <span class="movie-rating" itemprop="contentRating">PG-13</span>
+                <span class="movie-duration" itemprop="duration">2h 15m</span>
+            </div>
+            
+            <p itemprop="description">Watch [MOVIE_TITLE] online in high quality with multiple resolution options. [MOVIE_TITLE] is a [GENRE] movie released in [YEAR].</p>
+        </article>
 
-  <!-- Header -->
-<header>
-  <a href="/">mFlix moviE web-app</a>
-  <div class="headerIcon">
-  <!-- Search Button -->
-  <button class="searchbtn" onclick="window.location.href='src/template/search.html';">
-    <i class="fas fa-search"></i>
-  </button>
-  
-  <!-- Mode Toggle Button -->
-  <button class="mode-toggle" onclick="toggleMode()">
-    <i class="fas fa-sun"></i>
-  </button>
-  </div>
-</header>
+        <section class="video-container" aria-label="Video player">
+            <video id="player" controls crossorigin playsinline poster="" aria-label="[MOVIE_TITLE] video player">
+                <!-- Video quality sources will be populated here by JavaScript -->
+                <track kind="captions" label="English" src="/captions/[MOVIE_ID].vtt" srclang="en" default>
+            </video>
+        </section>
 
-<!-- Main Container -->
-<div class="main-container" style="padding: 10px;">
+        <section class="quality-options" id="qualityOptions" aria-label="Video quality options">
+            <!-- Quality option buttons will be added here -->
+        </section>
 
-<!-- Heading -->
-<h1 style="font-size: 30px;">Download <span class="movieTitle3"></span> Web-DL Dual Audio movie {<span class="movieLanguage"></span>-<span class="movieOtherLanguage"></span>} +EngSubtitle 480p [500MB] 720p [1.2 GB] 1080p [2.6GB]</h1>
+        <div style="text-align: center;">
+            <a id="downloadLink" href="#" target="_blank" rel="noopener noreferrer" class="download-btn" aria-label="Download [MOVIE_TITLE]">
+                <span aria-hidden="true">⬇️</span> Download
+            </a>
+        </div>
+        
+        <section class="movie-info" itemprop="keywords">
+            <h2>About [MOVIE_TITLE]</h2>
+            <p>[MOVIE_TITLE] is a [GENRE] movie directed by [DIRECTOR] and starring [ACTORS]. The plot follows [BRIEF_PLOT_DESCRIPTION].</p>
+            
+            <h3>Details</h3>
+            <ul>
+                <li><strong>Director:</strong> <span itemprop="director">[DIRECTOR]</span></li>
+                <li><strong>Cast:</strong> <span itemprop="actor">[ACTORS]</span></li>
+                <li><strong>Genre:</strong> <span itemprop="genre">[GENRE]</span></li>
+                <li><strong>Release Date:</strong> <span itemprop="datePublished">[RELEASE_DATE]</span></li>
+            </ul>
+        </section>
+    </main>
 
-<p>✅ Download <span class="movieTitle3" id="movie-title" style="font-weight: bold; color: red;"></span> This is a <span class="movieType" style="font-weight: bold;"></span> and available in <span style="color: green; font-weight: bold;">1080p, 720p & 480p</span> Qualities For Your Mobile/tablet/Computer. This Movie is based on <span class="imdbGenre" style="font-weight: bold; color: #FFC500"></span>. This <span class="imdbType"></span> is available in HD Print So You can Click on the Download button below to download <span class="movieTitle"></span> <span class="movieYear"></span> HD Print Full Movie On Internet.</p>
+    <!-- Footer -->
+    <footer id="footer-placeholder" role="contentinfo"></footer>
 
-<p><a href="https://WatchOFlix.koyeb.app" style="color: red; font-weight: bold; text-decoration: none;">MyMoviesClan</a> Provide You Super Quality Of Movies Which You Download From This Website. MyMoviesClan is One OF The Best Platform For Downloading Latest Bollywood Movies, Hollywood HD Movies, And Web Series. We Provide Direct <span style="font-weight: bold;">Google Drive</span> Download Links For Fast And Secure Download. We're Very Happy To Stay With You. Please Join Our Telegram Group.</p>
+    <!-- JavaScript -->
+    <script src="https://cdn.plyr.io/3.6.12/plyr.polyfilled.js" defer></script>
+    <script>
+        // Parse URL to get movie data
+        document.addEventListener('DOMContentLoaded', function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const movieData = JSON.parse(decodeURIComponent(urlParams.get('data')));
+            
+            // Update meta tags with movie data
+            updateMetaTags(movieData);
+            
+            // Populate movie details
+            document.getElementById('movieTitle').textContent = movieData.title;
+            document.getElementById('movieYear').textContent = movieData.year;
+            document.getElementById('thumbnail').src = movieData.thumbnail;
+            document.getElementById('thumbnail').alt = `${movieData.title} movie poster`;
 
+            // Get video element and set poster image
+            const playerElement = document.getElementById('player');
+            playerElement.setAttribute('poster', movieData.thumbnail);
+            playerElement.setAttribute('aria-label', `${movieData.title} video player`);
 
-<div class="container2" style="display: flex; flex-direction: column;">
-<div class="posterContainer" style="margin-right: 20px; background-color: #000; padding: 20px; border-radius: 10px 10px 0px 0px; margin-right: 0; margin-bottom: 0;">
-	
-<img class="imdbPoster" alt="Movie Poster" style="max-width: 300px; height: auto; display: block; margin: 0 auto; border-radius:10px;">
-</div><div class="detailsContainer" style="margin-right: 20px; background-color: #000; padding: 20px; color: #fff; border-radius: 0px 0px 10px 10px; margin-right: 0; margin-bottom: 0;">
-<div style="color: #C1C1C1;"><h2 style=" color: #C1C1C1; font-size: 24px; margin-top: 0;"><span class="movieTitle"></span> (<span class="movieYear"></span>)</h2></div>
-<p style="color: #fff; margin: 0;"><span class="imdbRuntime"></span> | <span class="imdbGenre"></span> | <span class="imdbRelease"></span> | (<span class="imdbCountry"></span>)</p><br>
-<p style="margin: 0;"><strong style="color: #fff;">Rating:</strong> <span style="color: #C1C1C1; font-weight: bold;"> <span class="imdbRating"></span> </span> <span style="color: #fff;">/10</span> <span style="color: #888888;">from <span class="imdbVotes"></span> users</span></p><br>
-<p style="margin: 0;"><strong style="color: #fff;">Director:</strong> <span style="color: #C1C1C1;"> <span class="imdbDirector"></span> </span></p><p style="margin: 0;"><strong style="color: #fff;">Writer:</strong> <span style="color: #C1C1C1;"> <span class="imdbWriter"></span> </span></p>
-<p style="margin: 0;"><strong style="color: #fff;">Stars:</strong> <span style="color: #C1C1C1;"> <span class="imdbActors"></span> </span></p>
-</div></div>
+            // Populate video sources and add quality option buttons
+            const qualityOptionsContainer = document.getElementById('qualityOptions');
+            movieData.qualities.forEach((quality, index) => {
+                // Create source element for each quality
+                const source = document.createElement('source');
+                source.src = quality.streamUrl;
+                source.type = 'video/mp4';
+                source.setAttribute('size', quality.quality.match(/\d+/)[0]);
+                playerElement.appendChild(source);
 
+                // Create button for each quality option
+                const button = document.createElement('button');
+                button.textContent = `${quality.quality} (${quality.fileSize})`;
+                button.className = 'quality-btn' + (index === 0 ? ' active' : '');
+                button.setAttribute('aria-label', `Play in ${quality.quality} quality`);
+                
+                button.addEventListener('click', () => {
+                    // Update active button styling
+                    document.querySelectorAll('.quality-btn').forEach(btn => {
+                        btn.classList.remove('active');
+                        btn.style.backgroundColor = '#333';
+                    });
+                    button.classList.add('active');
+                    button.style.backgroundColor = '#ff5722';
+                    
+                    // Change video source
+                    playerElement.querySelectorAll('source').forEach(src => {
+                        if (src.getAttribute('size') === quality.quality.match(/\d+/)[0]) {
+                            playerElement.src = src.src;
+                        }
+                    });
+                    player.restart();
+                    player.play();
+                });
 
-<p> <span style="background: 0px 0px; color: teal; font-family: arial; font-size: 16px;">
-    <span class="quality" style="background: rgb(249, 163, 2); border-radius: 3px; color: white; display: inline-block; margin-left: 2px; padding: 2px 5px; text-transform: uppercase;">
-<strong>STORYLINE :-</strong>
-</span></span> </p>
-<p><span class="imdbPlot"></span></p>
+                qualityOptionsContainer.appendChild(button);
+            });
 
-<p> <span style="background: 0px 0px; color: teal; font-family: arial; font-size: 16px;">
-<span class="quality" style="background: rgb(34, 34, 34); border-radius: 3px; color: white; display: inline-block; margin-left: 2px; padding: 2px 5px; text-transform: uppercase;">
-<strong>SCREENSHOTS :-</strong>
-</span></span> </p>
+            // Set the download link
+            const downloadLink = document.getElementById('downloadLink');
+            downloadLink.href = movieData.downloadLink;
+            downloadLink.setAttribute('aria-label', `Download ${movieData.title} in highest quality`);
 
-<p> <span style="background: 0px 0px; color: teal; font-family: arial; font-size: 16px;">
-<span class="quality" style="background: rgb(34, 34, 34); border-radius: 3px; color: white; display: inline-block; margin-left: 2px; padding: 2px 5px; text-transform: uppercase;">
-<b>DOWNLOAD LINKS :-</b>
-</span></span> </p> 
-
-
-<!-- Download Options -->
-<div id="downloadOptions"></div>
-
-
-<p> <span style="background: 0px 0px; color: teal; font-family: arial; font-size: 16px;">
-<span class="quality" style="background: rgb(34, 34, 34); border-radius: 3px; color: white; display: inline-block; margin-left: 2px; padding: 2px 5px; text-transform: uppercase;">
-<b>Stream online :-</b>
-</span></span> </p>
-
-
-<!-- Video Player Section -->
-  <div class="video-player" style="margin-top: 0px;">
-    <video id="player" controls crossorigin playsinline poster="">
-      <!-- Video quality sources will be populated here by JavaScript -->
-    </video>
-  </div>
- 
-
-  <!-- Quality Options (HIDDEN) -->
-  <div class="quality-options" id="qualityOptions" style="display: none;">
-<!-- Quality option buttons will be added here -->
-  </div>
-
-</div> <!-- Main-Container Close/Ends Here -->
-
-
-<!-- Footer -->
-  <footer>
-  <div class="footer" style="margin-top: 40px; border-radius: 20px 20px 0px 0px; box-shadow: rgba(0, 0, 0, 0.1) 0px 5px 35px; box-sizing: border-box; padding:15px; position: relative; left:0; bottom:0; width:100%; text-align: center; background-color: #222; font-size: 14px;  color: #fff;">
-    <div class="made-with-love" style="color: #ff9800; margin: 5px 0;">Made with ❤ by WebCoderHub</div>
-    
-    <div class="social-links" style="
-        margin-top: 10px; margin-bottom: 10px;">
-        <a href="https://github.com/" target="_blank" style="
-            margin: 0 10px; 
-            color: #fff; 
-            text-decoration: none; 
-            font-size: 16px;">
-            <i class="fab fa-github"></i>
-        </a>
-        <a href="https://twitter.com/" target="_blank" style="
-            margin: 0 10px; 
-            color: #fff; 
-            text-decoration: none; 
-            font-size: 16px;">
-            <i class="fab fa-twitter"></i>
-        </a>
-        <a href="https://linkedin.com/" target="_blank" style="
-            margin: 0 10px; 
-            color: #fff; 
-            text-decoration: none; 
-            font-size: 16px;">
-            <i class="fab fa-linkedin"></i>
-        </a>
-    </div>
-    
-    <div>
-      © <span id='getYear'>
-      <script>
-
-      /*<![CDATA[*/ var d = new Date(); var n = d.getFullYear(); document.getElementById('getYear').innerHTML = n; /*]]>*/
-      </script></span> ‧
-      <bdi>
-        <a href='https://t.me/webcoderhub' style="color:red; text-decoration: none;">WebCoderHub</a>
-      </bdi>‧ All rights reserved.
-    </div>
-  </div>
-</footer>
-  
-
-  <script>
-    // Extract title from the URL query parameters
-const urlParams = new URLSearchParams(window.location.search);
-const title2 = decodeURIComponent(urlParams.get('title'));
-
-// Fetch the movie data stored in localStorage
-const movieData = JSON.parse(localStorage.getItem('movieData'));
-
-// Check if movie data is available and matches the requested title
-if (movieData && movieData.title === title2) {
-    // Populate movie details
-    document.querySelectorAll('.movieTitle').forEach(el => el.textContent = movieData.title);
-    document.querySelectorAll('.movieTitle3').forEach(el => el.textContent = movieData.title3);
-    document.querySelectorAll('.movieType').forEach(el => el.textContent = movieData.type);
-    document.querySelectorAll('.movieYear').forEach(el => el.textContent = movieData.year);
-    document.querySelectorAll('.moviePoster').forEach(el => {
-        el.src = movieData.thumbnail || 'default-poster.jpg';
-    }); 
-
-    // For series, show season and episode; otherwise, default to 'N/A'
-    document.querySelectorAll('.movieSeason').forEach(el => el.textContent = movieData.qualities?.[0]?.season);
-    document.querySelectorAll('.movieEpisode').forEach(el => el.textContent = movieData.qualities?.[0]?.episode);
-
-    // Populate language and other languages from the first quality
-    document.querySelectorAll('.movieLanguage').forEach(el => el.textContent = movieData.qualities?.[0]?.language);
-    document.querySelectorAll('.movieOtherLanguage').forEach(el => el.textContent = movieData.qualities?.[0]?.otherLanguage);
-
-    // Populate IMDb data
-    if (movieData.imdbData) {
-        document.querySelectorAll('.imdbRuntime').forEach(el => el.textContent = movieData.imdbData.runtime);
-        document.querySelectorAll('.imdbRating').forEach(el => el.textContent = movieData.imdbData.imdbRating);
-        document.querySelectorAll('.imdbVotes').forEach(el => el.textContent = movieData.imdbData.imdbVotes);
-        document.querySelectorAll('.imdbGenre').forEach(el => el.textContent = movieData.imdbData.Genre);
-        document.querySelectorAll('.imdbPlot').forEach(el => el.textContent = movieData.imdbData.plot);
-        document.querySelectorAll('.imdbPoster').forEach(el => {
-            el.src = movieData.imdbData.poster || movieData.thumbnail;
+            // Initialize Plyr with quality control enabled
+            const player = new Plyr(playerElement, {
+                controls: ['play', 'fast-forward', 'progress', 'current-time', 'mute', 'volume', 'download', 'settings', 'fullscreen'],
+                settings: ['quality', 'speed'],
+                keyboard: { focused: true, global: true },
+                tooltips: { controls: true, seek: true }
+            });
+            
+            // Set up structured data
+            addStructuredData(movieData);
         });
-        document.querySelectorAll('.imdbCountry').forEach(el => el.textContent = movieData.imdbData.country);
-        document.querySelectorAll('.imdbDirector').forEach(el => el.textContent = movieData.imdbData.director);
-        document.querySelectorAll('.imdbWriter').forEach(el => el.textContent = movieData.imdbData.writer);
-        document.querySelectorAll('.imdbActors').forEach(el => el.textContent = movieData.imdbData.actors);
-        document.querySelectorAll('.imdbType').forEach(el => el.textContent = movieData.imdbData.Type);
-        document.querySelectorAll('.imdbSeasons').forEach(el => el.textContent = movieData.imdbData.totalSeasons);
-        document.querySelectorAll('.imdbRelease').forEach(el => el.textContent = movieData.imdbData.releaseDate);
-    }
-
-    // Set the poster image for the video player
-    const playerElement = document.getElementById('player');
-    playerElement.setAttribute('poster', movieData.thumbnail);
-
-    // Populate video sources and add quality option buttons
-    const qualityOptionsContainer = document.getElementById('qualityOptions');
-    movieData.qualities.forEach((quality, index) => {
-        // Create source element for each quality
-        const source = document.createElement('source');
-        source.src = quality.streamUrl;
-        source.type = 'video/mp4';
-        source.setAttribute('size', quality.quality.match(/\d+/)[0]);
-        playerElement.appendChild(source);
-
-        // Create button for each quality option
-        const button = document.createElement('button');
-        button.textContent = `${quality.quality} (${quality.fileSize})`;
-        button.addEventListener('click', () => {
-            playerElement.querySelectorAll('source').forEach(src => {
-                if (src.getAttribute('size') === quality.quality.match(/\d+/)[0]) {
-                    playerElement.src = src.src;
+        
+        function updateMetaTags(movieData) {
+            // Update meta tags with movie data
+            const metaDescription = document.querySelector('meta[name="description"]');
+            const ogTitle = document.querySelector('meta[property="og:title"]');
+            const ogDescription = document.querySelector('meta[property="og:description"]');
+            const ogImage = document.querySelector('meta[property="og:image"]');
+            const twitterTitle = document.querySelector('meta[name="twitter:title"]');
+            const twitterDescription = document.querySelector('meta[name="twitter:description"]');
+            const twitterImage = document.querySelector('meta[name="twitter:image"]');
+            const schemaName = document.querySelector('meta[itemprop="name"]');
+            const schemaDescription = document.querySelector('meta[itemprop="description"]');
+            const schemaImage = document.querySelector('meta[itemprop="image"]');
+            
+            const pageTitle = `Watch ${movieData.title} (${movieData.year}) Online | YourMovieSiteName`;
+            const descriptionText = `Watch ${movieData.title} (${movieData.year}) online in high quality with multiple resolution options`;
+            
+            // Update document title
+            document.title = pageTitle;
+            
+            // Update meta tags
+            if (metaDescription) metaDescription.content = descriptionText;
+            if (ogTitle) ogTitle.content = pageTitle;
+            if (ogDescription) ogDescription.content = descriptionText;
+            if (ogImage) ogImage.content = movieData.thumbnail;
+            if (twitterTitle) twitterTitle.content = pageTitle;
+            if (twitterDescription) twitterDescription.content = descriptionText;
+            if (twitterImage) twitterImage.content = movieData.thumbnail;
+            if (schemaName) schemaName.content = movieData.title;
+            if (schemaDescription) schemaDescription.content = descriptionText;
+            if (schemaImage) schemaImage.content = movieData.thumbnail;
+        }
+        
+        function addStructuredData(movieData) {
+            const script = document.createElement('script');
+            script.type = 'application/ld+json';
+            script.text = JSON.stringify({
+                "@context": "https://schema.org",
+                "@type": "Movie",
+                "name": movieData.title,
+                "description": `Watch ${movieData.title} online in high quality`,
+                "image": movieData.thumbnail,
+                "dateCreated": movieData.year,
+                "contentRating": "PG-13",
+                "genre": "Action/Adventure",
+                "duration": "PT2H15M",
+                "actor": [
+                    {
+                        "@type": "Person",
+                        "name": "Actor One"
+                    },
+                    {
+                        "@type": "Person",
+                        "name": "Actor Two"
+                    }
+                ],
+                "director": {
+                    "@type": "Person",
+                    "name": "Director Name"
                 }
             });
-            playerElement.load();
-            playerElement.play();
-        });
+            document.head.appendChild(script);
+        }
 
-        qualityOptionsContainer.appendChild(button);
-    });
+        // Load Header and Footer using JavaScript
+        fetch('header.html')
+            .then(response => response.text())
+            .then(data => document.getElementById('header-placeholder').innerHTML = data);
 
-    // Populate download buttons
-const downloadOptionsContainer = document.getElementById('downloadOptions');
-movieData.qualities.forEach((quality) => {
-    // Check if the movie is a series and has season/episode details
-    let extraInfo = '';
-    if (movieData.type && movieData.type === 'series') {
-        const season = quality.season || 'S?'; // Default to S? if not available
-        const episode = quality.episode || 'E?'; // Default to E? if not available
-        extraInfo = ` - Season ${season}, Episode ${episode}`;
-    }
-
-    // Create a container for the button and its text
-    const buttonContainer = document.createElement('div');
-    buttonContainer.style.marginBottom = '10px'; // Add some spacing between buttons
-
-    // Create a text element for the button description
-    const buttonText = document.createElement('p');
-    buttonText.style.marginBottom = '10px'; // Remove default paragraph margins
-    buttonText.style.fontSize = '14px'; // Optional: Adjust font size
-    buttonText.style.color = '#f8f'; // Set default text color to white
-
-    // Create spans for language and otherLanguage with orange color
-    const languageSpan = document.createElement('span');
-    languageSpan.textContent = `${quality.language}`;
-    languageSpan.style.color = 'orange'; // Set color to orange
-
-    const otherLanguageSpan = document.createElement('span');
-    otherLanguageSpan.textContent = ` ${quality.otherLanguage}`;
-    otherLanguageSpan.style.color = 'orange'; // Set color to orange
-
-    // Create the size span with orange color
-    const sizeSpan = document.createElement('span');
-    sizeSpan.textContent = `[${quality.fileSize}]`; // Add file size in the format [size]
-    sizeSpan.style.color = '#fff'; // Set color to orange
-
-    // Set the rest of the text for the button (title and quality)
-    buttonText.textContent = `Download ${movieData.title3} {`; // Start text with the title and open the curly braces
-    buttonText.appendChild(languageSpan); // Add language span to the text
-    buttonText.appendChild(otherLanguageSpan); // Add other language span to the text
-    buttonText.textContent += `} ${quality.quality} `; // Close the curly braces and add quality
-
-    // Append the size span
-    buttonText.appendChild(sizeSpan);
-
-    // Create the button for downloading
-    const downloadButton = document.createElement('button');
-    downloadButton.textContent = `Download Now`;
-    downloadButton.style.display = 'block'; // Ensure the button is below the text
-
-    downloadButton.addEventListener('click', () => {
-        const a = document.createElement('a'); // Create a temporary anchor tag
-        a.href = quality.streamUrl; // Use the stream URL as the download link
-        a.download = `${movieData.title3}_${quality.quality}.mp4`; // Set download filename
-        document.body.appendChild(a);
-        a.click(); // Trigger download
-        document.body.removeChild(a); // Clean up
-    });
-
-    // Append the text and button to the container
-    buttonContainer.appendChild(buttonText);
-    buttonContainer.appendChild(downloadButton);
-
-    // Append the container to the download options container
-    downloadOptionsContainer.appendChild(buttonContainer);
-});
-
-    // Initialize Plyr with quality control enabled
-    const player = new Plyr(playerElement, {
-        controls: ['play', 'play-large', 'fast-forward', 'progress', 'current-time', 'mute', 'volume', 'settings', 'fullscreen'],
-        settings: ['quality']
-    });
-}
-  </script> 
-
-
-
-  <!-- Dark mode Toogle -->
-  <script>
-    // Toggle Dark/Light Mode
-    function toggleMode() {
-      const body = document.body;
-      const modeButton = document.querySelector('.mode-toggle i');
-
-      if (body.classList.contains('dark-mode')) {
-        body.classList.replace('dark-mode', 'light-mode');
-        modeButton.classList.replace('fa-moon', 'fa-sun'); // Sun icon for light mode
-      } else {
-        body.classList.replace('light-mode', 'dark-mode');
-        modeButton.classList.replace('fa-sun', 'fa-moon'); // Moon icon for dark mode
-      }
-    }
-</script> 
+        fetch('footer.html')
+            .then(response => response.text())
+            .then(data => document.getElementById('footer-placeholder').innerHTML = data);
+    </script>
+    
+    <!-- Darkmode Script -->
+    <script src="src/js/script.js" defer></script>
+</body>
+</html>
